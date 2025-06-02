@@ -1,0 +1,272 @@
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Typography,
+  Box,
+  CircularProgress,
+  Avatar,
+  Paper,
+  Grid,
+  Card,
+  Button,
+  Stack,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import team2 from "assets/images/team-2.jpg";
+import axios from "axios";
+
+export default function AgentDetails() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [agent, setAgent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      setAgent(null);
+      return;
+    }
+    axios
+      .get("https://hellohelp-update-backend.onrender.com/api/agent/agents", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const data = res.data;
+        const found = data.find((a) => String(a.id) === String(id));
+        setAgent(found || null);
+        setLoading(false);
+      })
+      .catch(() => {
+        setAgent(null);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading)
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  if (!agent)
+    return (
+      <Typography align="center" mt={4}>
+        Agent not found
+      </Typography>
+    );
+
+  return (
+    <Card
+      sx={{
+        maxWidth: 1000,
+        // maxHeight: 800,
+        mx: "auto",
+        mt: 4,
+        p: 2,
+        borderRadius: 3,
+        background: "#f5f7fa",
+      }}
+    >
+      <Box>
+        {/* Top Buttons */}
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate("/agents")}
+            sx={{ fontWeight: 600, color: "pink" }}
+          >
+            Back to Users List
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<EditIcon />}
+            onClick={() => navigate("/tables")}
+            sx={{ fontWeight: 600, color: "pink" }}
+          >
+            Edit Profile
+          </Button>
+        </Stack>
+        {/* Blue Cover */}
+        <Box
+          sx={{
+            width: "100%",
+            height: 100,
+            background: "#1976d2",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            position: "relative",
+            borderRadius: 2,
+          }}
+        >
+          <Avatar
+            src={team2}
+            sx={{
+              width: 130,
+              height: 130,
+              border: "5px solid #fff",
+              background: "#e3f0fc",
+              position: "absolute",
+              bottom: -65,
+              left: "50%",
+              transform: "translateX(-50%)",
+              fontSize: 60,
+              boxShadow: 3,
+            }}
+          />
+        </Box>
+        {/* Name and Role */}
+        <Box
+          sx={{
+            mt: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" fontWeight="bold" sx={{ mt: 1, color: "#222" }}>
+            {agent.username}
+          </Typography>
+          <Box
+            sx={{
+              mt: 1,
+              px: 2,
+              py: 0.5,
+              background: "#e3f0fc",
+              borderRadius: "20px",
+              display: "inline-block",
+            }}
+          >
+            <Typography variant="body1" sx={{ color: "#1976d2", fontWeight: 600 }}>
+              {agent.role || "Agent"}
+            </Typography>
+          </Box>
+        </Box>
+        {/* Info Card */}
+        {/* <Paper
+          elevation={2}
+          sx={{
+            mt: 6,
+            mx: "auto",
+            p: 4,
+            maxWidth: 920,
+            borderRadius: 3,
+            background: "#fff",
+          }}
+        > */}
+        <Typography variant="subtitle1" fontWeight="bold" gutterBottom align="center">
+          Profile Information
+        </Typography>
+
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            mt: 1,
+            maxWidth: 920,
+            mx: "auto",
+            alignItems: "stretch", // Important!
+          }}
+        >
+          {/* Left Card */}
+          <Grid item xs={12} md={6} sx={{ display: "flex" }}>
+            <Paper
+              elevation={2}
+              sx={{
+                p: 4,
+                borderRadius: 3,
+                background: "#fff",
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Email:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.email || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Mobile:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.phone || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Location:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.location || "N/A"}
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+
+          {/* Right Card */}
+          <Grid item xs={12} md={5.5}>
+            <Paper
+              elevation={1}
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                background: "#fff",
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Created At:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.created_at || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Updated At:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.updated_at || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Status:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "error.main" }}>
+                  {agent.status || "Active"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 90 }}>
+                  Department:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "error.main" }}>
+                  {agent.department || "Support"}
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+    </Card>
+  );
+}
