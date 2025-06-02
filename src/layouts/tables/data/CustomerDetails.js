@@ -65,19 +65,23 @@ export default function CustomerDetails() {
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Button
             variant="contained"
-            color="primary"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => navigate("/customers")}
-            sx={{ fontWeight: 600, color: "pink" }}
+            color="info"
+            startIcon={<ArrowBackIcon sx={{ color: "white" }} />}
+            onClick={() => navigate(-1)}
+            sx={{ fontWeight: 600 }}
           >
             Back to Customers List
           </Button>
           <Button
             variant="contained"
-            color="primary"
+            color="info"
             startIcon={<EditIcon />}
             onClick={() => navigate(`/customer/${id}/edit`)}
-            sx={{ fontWeight: 600, color: "pink" }}
+            sx={{
+              fontWeight: 600,
+              color: "white",
+              "& .MuiButton-startIcon": { color: "white" },
+            }}
           >
             Edit Profile
           </Button>

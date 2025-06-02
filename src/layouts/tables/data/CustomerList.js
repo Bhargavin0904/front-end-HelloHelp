@@ -55,12 +55,11 @@ export default function data() {
     </MDBox>
   );
 
-  const Job = ({ title, description }) => (
+  const Job = ({ title }) => (
     <MDBox lineHeight={1} textAlign="left">
       <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-        {title}
+        {title || "-"}
       </MDTypography>
-      <MDTypography variant="caption">{description}</MDTypography>
     </MDBox>
   );
 
@@ -102,16 +101,16 @@ export default function data() {
               </MDTypography>
             </MDBox>
           ),
-          created_at: (
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              {customer.created_at}
-            </MDTypography>
-          ),
-          updated_at: (
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              {customer.updated_at}
-            </MDTypography>
-          ),
+          // created_at: (
+          //   <MDTypography variant="caption" color="text" fontWeight="medium">
+          //     {customer.created_at}
+          //   </MDTypography>
+          // ),
+          // updated_at: (
+          //   <MDTypography variant="caption" color="text" fontWeight="medium">
+          //     {customer.updated_at}
+          //   </MDTypography>
+          // ),
           action: (
             <MDButton
               component={Link}
@@ -139,8 +138,8 @@ export default function data() {
       { Header: "username", accessor: "username", align: "left" },
       { Header: "email", accessor: "email", align: "left" },
       { Header: "phone no", accessor: "phone_no", align: "center" },
-      { Header: "created at", accessor: "created_at", align: "center" },
-      { Header: "updated at", accessor: "updated_at", align: "center" },
+      // { Header: "created at", accessor: "created_at", align: "center" },
+      // { Header: "updated at", accessor: "updated_at", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
     ],
     rows,

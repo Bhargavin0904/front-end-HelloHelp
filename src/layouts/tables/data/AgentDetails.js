@@ -75,19 +75,19 @@ export default function AgentDetails() {
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Button
             variant="contained"
-            color="primary"
+            color="info"
             startIcon={<ArrowBackIcon />}
-            onClick={() => navigate("/agents")}
-            sx={{ fontWeight: 600, color: "pink" }}
+            onClick={() => navigate(-1)}
+            sx={{ fontWeight: 600, color: "white" }}
           >
             Back to Users List
           </Button>
           <Button
             variant="contained"
-            color="primary"
+            color="info"
             startIcon={<EditIcon />}
             onClick={() => navigate("/tables")}
-            sx={{ fontWeight: 600, color: "pink" }}
+            sx={{ fontWeight: 600, color: "white" }}
           >
             Edit Profile
           </Button>
@@ -199,7 +199,7 @@ export default function AgentDetails() {
               </Box>
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Mobile:
+                  Phone No:
                 </Typography>
                 <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
                   {agent.phone || "N/A"}

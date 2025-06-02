@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import DataTable from "examples/Tables/DataTable";
+import PropTypes from "prop-types";
 
 // const mockData = [
 //   {
@@ -133,6 +134,45 @@ export default function CallHistory() {
     return d.toLocaleDateString() + " " + d.toLocaleTimeString();
   };
 
+  function CallTypeChip({ value }) {
+    return (
+      <Chip
+        label={value}
+        sx={{
+          backgroundColor: value === "audio" ? "#e3f0fc" : "#f3e8fd",
+          color: value === "audio" ? "#1976d2" : "#9c27b0",
+          fontWeight: 500,
+          borderRadius: "8px",
+          px: 1.5,
+        }}
+      />
+    );
+  }
+
+  CallTypeChip.propTypes = {
+    value: PropTypes.string.isRequired,
+  };
+
+  function StatusChip({ value }) {
+    return (
+      <Chip
+        label={value}
+        sx={{
+          backgroundColor:
+            value === "accepted" ? "#e3fde8" : value === "initiated" ? "#fdf7e3" : "#fde3e3",
+          color: value === "accepted" ? "#388e3c" : value === "initiated" ? "#fbc02d" : "#d32f2f",
+          fontWeight: 500,
+          borderRadius: "8px",
+          px: 1.5,
+        }}
+      />
+    );
+  }
+
+  StatusChip.propTypes = {
+    value: PropTypes.string.isRequired,
+  };
+
   return (
     <>
       {/* <Card> */}
@@ -152,7 +192,7 @@ export default function CallHistory() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="h5" fontWeight="bold">
+                <MDTypography variant="h6" fontWeight="bold" color="white">
                   📞 Call History
                 </MDTypography>
               </MDBox>
@@ -167,6 +207,7 @@ export default function CallHistory() {
                       {
                         Header: "Call Type",
                         accessor: "call_type",
+                        // eslint-disable-next-line react/prop-types
                         Cell: ({ value }) => (
                           <Chip
                             label={value}
@@ -183,6 +224,7 @@ export default function CallHistory() {
                       {
                         Header: "Request",
                         accessor: "status",
+                        // eslint-disable-next-line react/prop-types
                         Cell: ({ value }) => (
                           <Chip
                             label={value}

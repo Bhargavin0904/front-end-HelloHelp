@@ -46,7 +46,7 @@ export default function useAgentTableData() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchAgents = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found in localStorage");
@@ -71,27 +71,22 @@ export default function useAgentTableData() {
           ),
           phone: (
             <MDBox ml={-1} display="flex" alignItems="center">
-              <MDBadge
-                // badgeContent={agent.phone ? "online" : "offline"}
-                color={agent.phone ? "success" : "dark"}
-                variant="gradient"
-                size="sm"
-              />
+              <MDBadge color={agent.phone ? "success" : "dark"} variant="gradient" size="sm" />
               <MDTypography variant="caption" color="text" fontWeight="medium" ml={1}>
                 {agent.phone}
               </MDTypography>
             </MDBox>
           ),
-          created_at: (
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              {agent.created_at}
-            </MDTypography>
-          ),
-          updated_at: (
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              {agent.updated_at}
-            </MDTypography>
-          ),
+          // created_at: (
+          //   <MDTypography variant="caption" color="text" fontWeight="medium">
+          //     {agent.created_at}
+          //   </MDTypography>
+          // ),
+          // updated_at: (
+          //   <MDTypography variant="caption" color="text" fontWeight="medium">
+          //     {agent.updated_at}
+          //   </MDTypography>
+          // ),
           action: (
             <MDButton
               component={Link}
@@ -112,6 +107,9 @@ export default function useAgentTableData() {
         console.error("Error fetching agent data:", error);
         setLoading(false);
       });
+  };
+  useEffect(() => {
+    fetchAgents();
   }, []);
 
   return {
@@ -119,9 +117,9 @@ export default function useAgentTableData() {
       { Header: "Id", accessor: "id", width: "10%", align: "left" },
       { Header: "Username", accessor: "username", width: "20%", align: "left" },
       { Header: "Email", accessor: "email", align: "left" },
-      { Header: "Phone", accessor: "phone", align: "center" },
-      { Header: "created at", accessor: "created_at", align: "center" },
-      { Header: "updated at", accessor: "updated_at", align: "center" },
+      { Header: "Phone no", accessor: "phone", align: "center" },
+      // { Header: "created at", accessor: "created_at", align: "center" },
+      // { Header: "updated at", accessor: "updated_at", align: "center" },
       { Header: "Action", accessor: "action", align: "center" },
     ],
     rows,
