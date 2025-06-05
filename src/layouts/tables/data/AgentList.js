@@ -60,6 +60,7 @@ export default function useAgentTableData() {
         },
       })
       .then((response) => {
+        const sortedData = response.data.sort((a, b) => b.id - a.id);
         const agentData = response.data;
         const formattedRows = agentData.map((agent) => ({
           id: <Job title={String(agent.id)} />,

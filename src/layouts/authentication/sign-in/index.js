@@ -59,6 +59,30 @@ function Basic() {
   //   }
   // };
 
+  const handleResetPassword = async () => {
+    // const email = prompt("Enter your email:");
+    const oldPassword = prompt("Enter your old password:");
+    const newPassword = prompt("Enter your new password:");
+    const token = localStorage.getItem("token");
+    if (oldPassword && newPassword && token) {
+      try {
+        await axios.post(
+          "https://hellohelp-update-backend.onrender.com/api/auth/reset-password",
+          { oldPassword, newPassword },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        alert("Password changed successfully!");
+      } catch (error) {
+        alert(error.response?.data?.error || "Failed to change password. Please try again.");
+      }
+    } else {
+      alert("Please provide old and new password, and make sure you are logged in.");
+    }
+  };
   const handleForgotPassword = () => {
     const userEmail = prompt("Please enter your email to reset your password:");
     if (userEmail) {
@@ -74,7 +98,6 @@ function Basic() {
       alert("Please enter email and password.");
       return;
     }
-
     try {
       const response = await axios.post(
         "https://hellohelp-update-backend.onrender.com/api/auth/login",
@@ -89,7 +112,7 @@ function Basic() {
       // Save token to localStorage
       localStorage.setItem("token", response.data.token);
 
-      alert("Signed in successfully!");
+      // alert("Signed in successfully!")
       navigate("/dashboard");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -156,18 +179,32 @@ function Basic() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </MDBox>
-
-            {/* Forgot Password */}
-            <MDBox textAlign="right" mb={2}>
-              <MDTypography
-                variant="button"
-                color="info"
-                fontWeight="medium"
-                sx={{ cursor: "pointer" }}
-                onClick={handleForgotPassword}
-              >
-                Forgot password?
-              </MDTypography>
+            {/* Reset Password & Forget Password */}
+            <MDBox mb={2}>
+              <Grid container>
+                <Grid item xs={6}>
+                  <MDTypography
+                    variant="button"
+                    color="info"
+                    fontWeight="medium"
+                    sx={{ cursor: "pointer", textAlign: "left" }}
+                    onClick={handleResetPassword} // changed from handleForgotPassword
+                  >
+                    Reset password?
+                  </MDTypography>
+                </Grid>
+                <Grid item xs={6} sx={{ textAlign: "right" }}>
+                  <MDTypography
+                    variant="button"
+                    color="info"
+                    fontWeight="medium"
+                    sx={{ cursor: "pointer" }}
+                    onClick={handleForgotPassword}
+                  >
+                    Forgot password?
+                  </MDTypography>
+                </Grid>
+              </Grid>
             </MDBox>
 
             <MDBox display="flex" alignItems="center" ml={-1}>

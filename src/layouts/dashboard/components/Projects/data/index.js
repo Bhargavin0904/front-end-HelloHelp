@@ -1,210 +1,152 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/function-component-definition */
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
-import Tooltip from "@mui/material/Tooltip";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Grid, Card, Chip, CardHeader } from "@mui/material";
+import Icon from "@mui/material/Icon";
+import { Link } from "react-router-dom";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
-import MDProgress from "components/MDProgress";
+import MDButton from "components/MDButton";
+import DataTable from "examples/Tables/DataTable";
 
-// Images
-import logoXD from "assets/images/small-logos/logo-xd.svg";
-import logoAtlassian from "assets/images/small-logos/logo-atlassian.svg";
-import logoSlack from "assets/images/small-logos/logo-slack.svg";
-import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
-import logoJira from "assets/images/small-logos/logo-jira.svg";
-import logoInvesion from "assets/images/small-logos/logo-invision.svg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+// Format time to readable format
+function formatTime(dateStr) {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
 
-export default function data() {
-  const avatars = (members) =>
-    members.map(([image, name]) => (
-      <Tooltip key={name} title={name} placeholder="bottom">
-        <MDAvatar
-          src={image}
-          alt="name"
-          size="xs"
-          sx={{
-            border: ({ borders: { borderWidth }, palette: { white } }) =>
-              `${borderWidth[2]} solid ${white.main}`,
-            cursor: "pointer",
-            position: "relative",
+// Calculate call duration
+function getDuration(start, end) {
+  if (!start || !end) return "0m 0s";
+  const diff = Math.max(0, new Date(end) - new Date(start));
+  const mins = Math.floor(diff / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  return `${mins}m ${secs}s`;
+}
 
-            "&:not(:first-of-type)": {
-              ml: -1.25,
-            },
+export default function RecentCallsTable() {
+  const [callLogs, setCallLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-            "&:hover, &:focus": {
-              zIndex: "10",
-            },
-          }}
-        />
-      </Tooltip>
-    ));
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    axios
+      .get("https://hellohelp-update-backend.onrender.com/api/call/call-logs", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const sortedData = res.data.sort((a, b) => new Date(b.started_at) - new Date(a.started_at));
+        setCallLogs(sortedData);
+        setLoading(false);
+      })
+      .catch(() => {
+        setCallLogs([]);
+        setLoading(false);
+      });
+  }, []);
 
-  const Company = ({ image, name }) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
-      <MDTypography variant="button" fontWeight="medium" ml={1} lineHeight={1}>
-        {name}
-      </MDTypography>
+  const rows = callLogs.map((call) => ({
+    id: call.id,
+    caller_name: call.caller_name || "-",
+    receiver_name: call.receiver_name || "-",
+    call_type: (
+      <Chip
+        label={call.call_type}
+        sx={{
+          backgroundColor: call.call_type === "audio" ? "#e3f0fc" : "#f3e8fd",
+          color: call.call_type === "audio" ? "#1976d2" : "#9c27b0",
+          fontWeight: 500,
+          borderRadius: "8px",
+          px: 1.5,
+        }}
+      />
+    ),
+    status: (
+      <Chip
+        label={call.status}
+        sx={{
+          backgroundColor:
+            call.status === "accepted"
+              ? "#e3fde8"
+              : call.status === "initiated"
+              ? "#fdf7e3"
+              : "#fde3e3",
+          color:
+            call.status === "accepted"
+              ? "#388e3c"
+              : call.status === "initiated"
+              ? "#fbc02d"
+              : "#d32f2f",
+          fontWeight: 500,
+          borderRadius: "8px",
+          px: 1.5,
+        }}
+      />
+    ),
+    time: formatTime(call.started_at),
+    duration: getDuration(call.started_at, call.ended_at),
+    action: (
+      <MDButton
+        component={Link}
+        to={`/CallDetails/${call.id}`}
+        variant="text"
+        color="info"
+        startIcon={<Icon>visibility</Icon>}
+      >
+        View
+      </MDButton>
+    ),
+  }));
+
+  return (
+    <MDBox pt={2} pb={3} sx={{ height: "100%", width: "155%", borderRadius: 3 }}>
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Card>
+            <MDBox
+              mx={2}
+              mt={-3}
+              py={3}
+              px={2}
+              variant="gradient"
+              bgColor="info"
+              borderRadius="lg"
+              coloredShadow="info"
+            >
+              <MDTypography variant="h6" fontWeight="bold" color="white">
+                📞 Recent Calls
+              </MDTypography>
+            </MDBox>{" "}
+            <MDBox pt={1}>
+              <DataTable
+                table={{
+                  columns: [
+                    { Header: "ID", accessor: "id" },
+                    { Header: "Caller", accessor: "caller_name" },
+                    { Header: "Receiver", accessor: "receiver_name" },
+                    { Header: "Call Type", accessor: "call_type" },
+                    { Header: "Status", accessor: "status" },
+                    { Header: "Time", accessor: "time" },
+                    { Header: "Duration", accessor: "duration" },
+                    { Header: "Action", accessor: "action" },
+                  ],
+                  rows: rows,
+                }}
+                isSorted={true}
+                entriesPerPage={{
+                  defaultValue: 5,
+                  entries: [5, 10, 25, 50],
+                }}
+                showTotalEntries={true}
+                noEndBorder
+              />
+              {/* <MDTypography variant="body2" color="text" mt={2}>
+                {loading ? "Loading..." : `Showing ${callLogs.length} calls`}
+              </MDTypography> */}
+            </MDBox>
+          </Card>
+        </Grid>
+      </Grid>
     </MDBox>
   );
-
-  return {
-    columns: [
-      { Header: "companies", accessor: "companies", width: "45%", align: "left" },
-      { Header: "members", accessor: "members", width: "10%", align: "left" },
-      { Header: "budget", accessor: "budget", align: "center" },
-      { Header: "completion", accessor: "completion", align: "center" },
-    ],
-
-    rows: [
-      {
-        companies: <Company image={logoXD} name="Material UI XD Version" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([
-              [team1, "Ryan Tompson"],
-              [team2, "Romina Hadid"],
-              [team3, "Alexander Smith"],
-              [team4, "Jessica Doe"],
-            ])}
-          </MDBox>
-        ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $14,000
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={60} color="info" variant="gradient" label={false} />
-          </MDBox>
-        ),
-      },
-      {
-        companies: <Company image={logoAtlassian} name="Add Progress Track" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([
-              [team2, "Romina Hadid"],
-              [team4, "Jessica Doe"],
-            ])}
-          </MDBox>
-        ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $3,000
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={10} color="info" variant="gradient" label={false} />
-          </MDBox>
-        ),
-      },
-      {
-        companies: <Company image={logoSlack} name="Fix Platform Errors" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([
-              [team1, "Ryan Tompson"],
-              [team3, "Alexander Smith"],
-            ])}
-          </MDBox>
-        ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            Not set
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={100} color="success" variant="gradient" label={false} />
-          </MDBox>
-        ),
-      },
-      {
-        companies: <Company image={logoSpotify} name="Launch our Mobile App" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([
-              [team4, "Jessica Doe"],
-              [team3, "Alexander Smith"],
-              [team2, "Romina Hadid"],
-              [team1, "Ryan Tompson"],
-            ])}
-          </MDBox>
-        ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $20,500
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={100} color="success" variant="gradient" label={false} />
-          </MDBox>
-        ),
-      },
-      {
-        companies: <Company image={logoJira} name="Add the New Pricing Page" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([[team4, "Jessica Doe"]])}
-          </MDBox>
-        ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $500
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={25} color="info" variant="gradient" label={false} />
-          </MDBox>
-        ),
-      },
-      {
-        companies: <Company image={logoInvesion} name="Redesign New Online Shop" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([
-              [team1, "Ryan Tompson"],
-              [team4, "Jessica Doe"],
-            ])}
-          </MDBox>
-        ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $2,000
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={40} color="info" variant="gradient" label={false} />
-          </MDBox>
-        ),
-      },
-    ],
-  };
 }

@@ -73,6 +73,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const publicRoutes = ["/authentication/sign-in", "/authentication/sign-up"];
 
   // Cache for the rtl
   useMemo(() => {
@@ -121,11 +122,14 @@ export default function App() {
       }
 
       if (route.route) {
+        const isPublic = publicRoutes.includes(route.route);
         return [
           <Route
             exact
             path={route.route}
-            element={route.component}
+            element={
+              isPublic ? route.component : <ProtectedRoute>{route.component}</ProtectedRoute>
+            }
             key={route.key || route.route}
           />,
         ];

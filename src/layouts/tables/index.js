@@ -10,26 +10,24 @@ import projectsTableData from "layouts/tables/data/CustomerList";
 import useAgentTableData from "layouts/tables/data/AgentList";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useState } from "react";
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Dialog, DialogTitle } from "@mui/material";
 import MDButton from "components/MDButton";
 import AddAgent from "layouts/tables/data/AddAgent";
 import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
-import { Password } from "@mui/icons-material";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function Users() {
-  const { columns, rows } = useAgentTableData(); // fetches agent data
-  const { columns: pColumns, rows: pRows } = projectsTableData(); // customer data
+  const { columns, rows } = useAgentTableData();
+  const { columns: pColumns, rows: pRows } = projectsTableData();
   const [setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [open, setOpen] = useState(false);
-  // const [form, setForm] = useState({ username: "", email: "", phone: "" });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [form, setForm] = useState({
     username: "",
@@ -41,7 +39,6 @@ function Users() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const fetchAgents = async () => {
@@ -60,9 +57,6 @@ function Users() {
     setLoading(false);
   };
 
-  React.useEffect(() => {
-    fetchAgents();
-  }, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />

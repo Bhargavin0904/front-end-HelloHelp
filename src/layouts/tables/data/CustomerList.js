@@ -79,6 +79,7 @@ export default function data() {
         },
       })
       .then((response) => {
+        const sortedData = response.data.sort((a, b) => b.id - a.id);
         const customerData = response.data;
         const formattedRows = customerData.map((customer) => ({
           id: <Job title={String(customer.id)} />,

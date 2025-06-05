@@ -138,9 +138,9 @@ function Configurator() {
         px={3}
       >
         <MDBox>
-          <MDTypography variant="h5">Material UI Configurator</MDTypography>
+          <MDTypography variant="h5">Dashboard Setting</MDTypography>
           <MDTypography variant="body2" color="text">
-            See our dashboard options.
+            Customize your dashboard preferences.
           </MDTypography>
         </MDBox>
 
@@ -163,7 +163,7 @@ function Configurator() {
 
       <MDBox pt={0.5} pb={3} px={3}>
         <MDBox>
-          <MDTypography variant="h6">Sidenav Colors</MDTypography>
+          <MDTypography variant="h6">NavBar Colors</MDTypography>
 
           <MDBox mb={0.5}>
             {sidenavColors.map((color) => (
@@ -209,7 +209,7 @@ function Configurator() {
         </MDBox>
 
         <MDBox mt={3} lineHeight={1}>
-          <MDTypography variant="h6">Sidenav Type</MDTypography>
+          <MDTypography variant="h6">Navbar Type</MDTypography>
           <MDTypography variant="button" color="text">
             Choose between different sidenav types.
           </MDTypography>
@@ -285,7 +285,7 @@ function Configurator() {
           <Switch checked={darkMode} onChange={handleDarkMode} />
         </MDBox>
         <Divider />
-        <MDBox mt={3} mb={2}>
+        {/* <MDBox mt={3} mb={2}>
           <MDButton
             component={Link}
             href="https://www.creative-tim.com/learning-lab/react/quick-start/material-dashboard/"
@@ -338,7 +338,7 @@ function Configurator() {
               &nbsp; Share
             </MDButton>
           </MDBox>
-        </MDBox>
+        </MDBox> */}
       </MDBox>
     </ConfiguratorRoot>
   );

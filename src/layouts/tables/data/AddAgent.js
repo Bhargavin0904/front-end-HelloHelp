@@ -125,12 +125,13 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
         }
       );
 
-      alert("Agent added successfully!");
+      // alert("Agent added successfully!");
       if (onAgentAdded) onAgentAdded();
       if (onClose) onClose();
     } catch (error) {
-      console.error("Add agent error:", error.response?.data || error.message);
+      // console.error("Add agent error:", error.response?.data || error.message);
       alert("Failed to add agent.");
+      return false;
     }
   };
 
