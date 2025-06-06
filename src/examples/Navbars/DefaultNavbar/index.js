@@ -31,8 +31,10 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 
 // Material Dashboard 2 React example components
-import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
-import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
+// import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
+// import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
+import IconButton from "@mui/material/IconButton";
+import React from "react";
 
 // Material Dashboard 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
@@ -40,7 +42,7 @@ import breakpoints from "assets/theme/base/breakpoints";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 
-function DefaultNavbar({ transparent, light, action }) {
+function DefaultNavbar({ transparent, light, action, onMenuClick }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -102,6 +104,15 @@ function DefaultNavbar({ transparent, light, action }) {
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         })}
       >
+        {/* <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={onMenuClick}
+          sx={{ mr: 2, display: { xs: "inline-flex", xl: "none" } }}
+        >
+          <Icon>menu</Icon>
+        </IconButton> */}
         <MDBox
           component={Link}
           to="/"
@@ -109,14 +120,14 @@ function DefaultNavbar({ transparent, light, action }) {
           lineHeight={1}
           pl={{ xs: 0, lg: 1 }}
         >
-          <MDTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
+          <MDTypography fontWeight="bold" color={light ? "white" : "dark"}>
             Hello Help
           </MDTypography>
         </MDBox>
-        <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          {/* <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} /> */}
-          {/* <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} /> */}
-          {/* <DefaultNavbarLink
+        {/* <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
+          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
+          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
+          <DefaultNavbarLink
             icon="account_circle"
             name="sign up"
             route="/authentication/sign-up"
@@ -127,8 +138,8 @@ function DefaultNavbar({ transparent, light, action }) {
             name="sign in"
             route="/authentication/sign-in"
             light={light}
-          /> */}
-        </MDBox>
+          />
+        </MDBox> */}
         {/* {action &&
           (action.type === "internal" ? (
             <MDBox display={{ xs: "none", lg: "inline-block" }}>
@@ -158,7 +169,7 @@ function DefaultNavbar({ transparent, light, action }) {
               </MDButton>
             </MDBox>
           ))} */}
-        <MDBox
+        {/* <MDBox
           display={{ xs: "inline-block", lg: "none" }}
           lineHeight={0}
           py={1.5}
@@ -168,9 +179,9 @@ function DefaultNavbar({ transparent, light, action }) {
           onClick={openMobileNavbar}
         >
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
-        </MDBox>
+        </MDBox> */}
       </MDBox>
-      {mobileView && <DefaultNavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
+      {/* {mobileView && <DefaultNavbarMobile open={mobileNavbar} close={closeMobileNavbar} />} */}
     </Container>
   );
 }
@@ -204,6 +215,7 @@ DefaultNavbar.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ]),
+  onMenuClick: PropTypes.func, // <-- add this line
 };
 
 export default DefaultNavbar;

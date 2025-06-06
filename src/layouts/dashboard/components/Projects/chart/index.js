@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Card,
   CardHeader,
@@ -32,59 +33,49 @@ const CallsChartCard = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [chartType, setChartType] = useState("line");
   const [timeRange, setTimeRange] = useState("week");
+  const [chartData, setChartData] = useState([]);
+  const [totals, setTotals] = useState({ received: 0, dialed: 0, total: 0 });
 
   const handleChartTypeChange = (_event, newChartType) => {
-    if (newChartType !== null) {
-      setChartType(newChartType);
-    }
+    if (newChartType !== null) setChartType(newChartType);
   };
 
   const handleTimeRangeChange = (_event, newTimeRange) => {
-    if (newTimeRange !== null) {
-      setTimeRange(newTimeRange);
-    }
+    if (newTimeRange !== null) setTimeRange(newTimeRange);
   };
 
-  // Sample data for different time ranges
-  const dayData = [
-    { time: "9 AM", received: 12, dialed: 8 },
-    { time: "10 AM", received: 19, dialed: 11 },
-    { time: "11 AM", received: 15, dialed: 14 },
-    { time: "12 PM", received: 8, dialed: 10 },
-    { time: "1 PM", received: 10, dialed: 7 },
-    { time: "2 PM", received: 14, dialed: 12 },
-    { time: "3 PM", received: 18, dialed: 15 },
-    { time: "4 PM", received: 21, dialed: 13 },
-    { time: "5 PM", received: 16, dialed: 9 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(
+          "https://hellohelp-update-backend.onrender.com/api/call/dashboard-stats",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              timeRange,
+            },
+          }
+        );
 
-  const weekData = [
-    { time: "Mon", received: 85, dialed: 65 },
-    { time: "Tue", received: 92, dialed: 78 },
-    { time: "Wed", received: 104, dialed: 82 },
-    { time: "Thu", received: 98, dialed: 76 },
-    { time: "Fri", received: 110, dialed: 90 },
-    { time: "Sat", received: 45, dialed: 30 },
-    { time: "Sun", received: 30, dialed: 25 },
-  ];
-
-  const monthData = [
-    { time: "Week 1", received: 564, dialed: 482 },
-    { time: "Week 2", received: 612, dialed: 530 },
-    { time: "Week 3", received: 587, dialed: 498 },
-    { time: "Week 4", received: 635, dialed: 545 },
-  ];
-
-  // Select the appropriate data based on timeRange
-  const chartData = timeRange === "day" ? dayData : timeRange === "week" ? weekData : monthData;
-
-  // Calculate total calls for the selected time range
-  const totalReceived = chartData.reduce((sum, item) => sum + item.received, 0);
-  const totalDialed = chartData.reduce((sum, item) => sum + item.dialed, 0);
-  const totalCalls = totalReceived + totalDialed;
+        const apiData = res.data?.data || [];
+        const received = apiData.reduce((sum, item) => sum + (item.received || 0), 0);
+        const dialed = apiData.reduce((sum, item) => sum + (item.dialed || 0), 0);
+        setChartData(apiData);
+        setTotals({ received, dialed, total: received + dialed });
+      } catch (err) {
+        console.error("Error fetching dashboard stats:", err);
+        setChartData([]);
+        setTotals({ received: 0, dialed: 0, total: 0 });
+      }
+    };
+    fetchData();
+  }, [timeRange]);
 
   return (
-    <Card sx={{ height: "100%", width: "155%", borderRadius: 3 }}>
+    <Card sx={{ height: "100%", width: isMobile ? "100%" : "155%", borderRadius: 3 }}>
       <MDBox
         mx={2}
         mt={-3}
@@ -99,12 +90,12 @@ const CallsChartCard = () => {
           📊 Call Analytics
         </MDTypography>
       </MDBox>
+
       <CardHeader
-        // title="Call Analytics"
-        subheader={`${totalCalls} total calls in selected period`}
+        subheader={`${totals.total} total calls in selected period`}
         action={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton size="small" sx={{ mr: 1 }} aria-label="Download report">
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <IconButton size="small" aria-label="Download report">
               <Download size={18} />
             </IconButton>
             <IconButton size="small" aria-label="More options">
@@ -113,6 +104,7 @@ const CallsChartCard = () => {
           </Box>
         }
       />
+
       <CardContent>
         <Box
           sx={{
@@ -121,16 +113,17 @@ const CallsChartCard = () => {
             alignItems: "center",
             mb: 3,
             flexWrap: "wrap",
-            gap: 1,
+            flexDirection: isMobile ? "column" : "row",
+            gap: 2,
           }}
         >
-          <Box sx={{ display: "flex", gap: 2, mb: { xs: 1, sm: 0 } }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
             <Box>
               <Typography variant="body2" color="text.secondary">
                 Received
               </Typography>
               <Typography variant="h6" fontWeight="bold">
-                {totalReceived}
+                {totals.received}
               </Typography>
             </Box>
             <Box>
@@ -138,7 +131,7 @@ const CallsChartCard = () => {
                 Dialed
               </Typography>
               <Typography variant="h6" fontWeight="bold">
-                {totalDialed}
+                {totals.dialed}
               </Typography>
             </Box>
           </Box>
@@ -186,13 +179,13 @@ const CallsChartCard = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                 <XAxis
                   dataKey="time"
-                  stroke={theme.palette.text.secondary}
                   tick={{ fontSize: 12 }}
+                  stroke={theme.palette.text.secondary}
                 />
-                <YAxis stroke={theme.palette.text.warning} tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} stroke={theme.palette.text.secondary} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: theme.palette.warning.paper,
+                    backgroundColor: theme.palette.background.paper,
                     borderColor: theme.palette.divider,
                     borderRadius: 8,
                     boxShadow: theme.shadows[3],
@@ -219,10 +212,10 @@ const CallsChartCard = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                 <XAxis
                   dataKey="time"
-                  stroke={theme.palette.text.secondary}
                   tick={{ fontSize: 12 }}
+                  stroke={theme.palette.text.secondary}
                 />
-                <YAxis stroke={theme.palette.text.secondary} tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} stroke={theme.palette.text.secondary} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: theme.palette.background.paper,

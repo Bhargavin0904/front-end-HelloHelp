@@ -1,3 +1,4 @@
+// components/LogoutButton.js
 import { useNavigate } from "react-router-dom";
 import MDButton from "components/MDButton";
 
@@ -5,10 +6,8 @@ function LogoutButton() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Remove token or any auth info
-    localStorage.removeItem("token");
-    // Redirect to login page
-    navigate("/authentication/sign-in");
+    localStorage.removeItem("token"); // Clear token
+    navigate("/authentication/sign-in"); // Redirect to login
   };
 
   return (
@@ -17,4 +16,5 @@ function LogoutButton() {
     </MDButton>
   );
 }
+
 export default LogoutButton;

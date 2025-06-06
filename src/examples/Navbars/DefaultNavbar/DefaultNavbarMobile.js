@@ -48,7 +48,7 @@ function DefaultNavbarMobile({ open, close }) {
         <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" />
         <DefaultNavbarLink icon="person" name="profile" route="/profile" />
         <DefaultNavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
-        <DefaultNavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
+        <DefaultNavbarLink icon="key" name="sign n" route="/authentication/sign-in" />
       </MDBox>
     </Menu>
   );

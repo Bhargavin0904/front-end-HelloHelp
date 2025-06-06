@@ -7,6 +7,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import DataTable from "examples/Tables/DataTable";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 // Format time to readable format
 function formatTime(dateStr) {
@@ -27,6 +28,8 @@ function getDuration(start, end) {
 export default function RecentCallsTable() {
   const [callLogs, setCallLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -99,7 +102,11 @@ export default function RecentCallsTable() {
   }));
 
   return (
-    <MDBox pt={2} pb={3} sx={{ height: "100%", width: "155%", borderRadius: 3 }}>
+    <MDBox
+      pt={2}
+      pb={3}
+      sx={{ height: "100%", width: isMobile ? "100%" : "155%", borderRadius: 3 }}
+    >
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Card>
@@ -113,11 +120,11 @@ export default function RecentCallsTable() {
               borderRadius="lg"
               coloredShadow="info"
             >
-              <MDTypography variant="h6" fontWeight="bold" color="white">
+              <MDTypography variant={isMobile ? "body1" : "h6"} fontWeight="bold" color="white">
                 📞 Recent Calls
               </MDTypography>
             </MDBox>{" "}
-            <MDBox pt={1}>
+            <MDBox sx={{ overflowX: isMobile ? "auto" : "visible" }}>
               <DataTable
                 table={{
                   columns: [
@@ -140,9 +147,6 @@ export default function RecentCallsTable() {
                 showTotalEntries={true}
                 noEndBorder
               />
-              {/* <MDTypography variant="body2" color="text" mt={2}>
-                {loading ? "Loading..." : `Showing ${callLogs.length} calls`}
-              </MDTypography> */}
             </MDBox>
           </Card>
         </Grid>
