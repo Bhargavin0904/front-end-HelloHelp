@@ -78,7 +78,7 @@ function Users() {
                 alignItems="center"
               >
                 <MDTypography variant="h6" fontWeight="bold" color="white">
-                  All Agents
+                  👨‍💼 All Agents
                 </MDTypography>
                 <MDButton
                   variant="contained"
@@ -130,7 +130,7 @@ function Users() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" fontWeight="bold" color="white">
-                  All Customers
+                  👥 All Customers
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

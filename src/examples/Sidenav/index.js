@@ -39,6 +39,7 @@ import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 import Drawer from "@mui/material/Drawer";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 // Material Dashboard 2 React context
 import {
@@ -47,6 +48,8 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
+import { IconButton } from "@mui/material";
+import { Import } from "lucide-react";
 
 function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
@@ -54,6 +57,7 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
   const [showSidenav, setShowSidenav] = useState(true);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   let textColor = "white";
 
@@ -139,14 +143,11 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
   return (
     <>
       <Drawer
-        variant="temporary"
+        variant={isMobile ? "temporary" : "permanent"}
         open={mobileOpen}
         onClose={onMobileClose}
         ModalProps={{
           keepMounted: true,
-          // Prevent closing on backdrop click or escape key
-          onBackdropClick: (e) => e.stopPropagation(),
-          onEscapeKeyDown: (e) => e.stopPropagation(),
         }}
         sx={{
           display: { xs: "block", xl: "none" },
@@ -184,6 +185,15 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
         />
         <List>{renderRoutes}</List>
       </Drawer>
+      {/* <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        edge="start"
+        onClick={() => setMobileOpen(true)} // You need to pass this down as prop
+        sx={{ display: { md: "none" }, mr: 2 }}
+      >
+        <Icon>menu</Icon>
+      </IconButton> */}
 
       <SidenavRoot
         {...rest}

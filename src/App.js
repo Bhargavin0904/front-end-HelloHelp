@@ -57,11 +57,11 @@ import CallDetails from "layouts/billing/components/CallDetails";
 import AgentDetails from "layouts/tables/data/AgentDetails";
 import CustomerDetails from "layouts/tables/data/CustomerDetails";
 import ProtectedRoute from "layouts/components/ProtectedRoute";
+import AdminNotificationPage from "layouts/notifications/AdminNotification";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
-    miniSidenav,
     direction,
     layout,
     openConfigurator,
@@ -74,7 +74,9 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const publicRoutes = ["/authentication/sign-in", "/authentication/sign-up"];
-
+  const [miniSidenav, setMiniSidenav] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -100,6 +102,13 @@ export default function App() {
       setOnMouseEnter(false);
     }
   };
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
 
   // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -175,6 +184,8 @@ export default function App() {
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
+              open={mobileOpen}
+              onClose={() => setMobileOpen(false)}
             />
             <Configurator />
             {configsButton}
@@ -210,6 +221,7 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
+
         <Route
           path="/agent/:id"
           element={
@@ -234,6 +246,18 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Add admin notification route here, wrapped with ProtectedRoute if needed */}
+        <Route
+          path="/admin/notifications"
+          element={
+            <ProtectedRoute>
+              <AdminNotificationPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Wildcard route MUST be last */}
         <Route path="*" element={<Navigate to="/authentication/sign-up" />} />
       </Routes>
     </ThemeProvider>

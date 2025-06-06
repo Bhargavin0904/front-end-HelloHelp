@@ -46,8 +46,8 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "Notifications",
-    key: "notifications",
+    name: "Push Notifications",
+    key: "push-notifications",
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,

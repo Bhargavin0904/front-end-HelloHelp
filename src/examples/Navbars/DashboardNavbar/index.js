@@ -53,7 +53,7 @@ import {
   setOpenConfigurator,
 } from "context";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+function DashboardNavbar({ absolute, light, isMini, onMenuClick }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -104,7 +104,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
+      {/* <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" /> */}
       {/* <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" /> */}
       {/* <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" /> */}
     </Menu>
@@ -138,45 +138,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
             {/* <MDBox pr={1}>
               <MDInput label="Search here" />
             </MDBox> */}
-            <MDBox color={light ? "white" : "inherit"}>
-              {/* <Link to="/authentication/sign-in/basic">
+            <MDBox color={light ? "white" : "inherit"} display="flex" alignItems="center" gap={1}>
+              {/* <Link to="/authentication/sign-in">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
+                  <Icon sx={iconsStyle}>login</Icon>
                 </IconButton>
               </Link>
+              <Link to="/authentication/sign-up">
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  <Icon sx={iconsStyle}>person_add</Icon>
+                </IconButton>
+              </Link> */}
+
+              {/* Optional: Hamburger menu and other actions */}
               <IconButton
-                size="small"
-                disableRipple
+                edge="start"
                 color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
+                aria-label="open drawer"
+                onClick={onMenuClick}
+                sx={{ display: { xs: "inline-flex", xl: "none" }, mr: 2 }}
               >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton> */}
-              {/* <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton> */}
-              {/* <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                <Icon sx={iconsStyle}>notifications</Icon>
-              </IconButton> */}
-              {renderMenu()}
+                <Icon>menu</Icon>
+              </IconButton>
             </MDBox>
           </MDBox>
         )}
@@ -190,13 +173,14 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
+  onMenuClick: () => {},
 };
 
-// Typechecking props for the DashboardNavbar
 DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
+  onMenuClick: PropTypes.func,
 };
 
 export default DashboardNavbar;
