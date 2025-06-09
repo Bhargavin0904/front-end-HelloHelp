@@ -182,7 +182,7 @@ const CallsChartCard = () => {
                   label={{ value: "Calls", angle: -90, position: "insideLeft" }}
                   tick={{ fontSize: 12 }}
                   stroke={theme.palette.text.secondary}
-                  domain={[0, "dataMax + 43"]}
+                  domain={[0, "dataMax + 8"]}
                   allowDecimals={false}
                 />
                 <Tooltip
