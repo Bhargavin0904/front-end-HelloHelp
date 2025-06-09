@@ -2,17 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
-  CardHeader,
   CardContent,
   Typography,
   Box,
   ToggleButtonGroup,
   ToggleButton,
-  IconButton,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { MoreVertical, BarChart2, LineChart as LineChartIcon, Download } from "lucide-react";
+import { BarChart2, LineChart as LineChartIcon } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -32,9 +30,9 @@ const CallsChartCard = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [chartType, setChartType] = useState("line");
-  const [timeRange, setTimeRange] = useState("week");
+  const [timeRange, setTimeRange] = useState("day");
   const [chartData, setChartData] = useState([]);
-  const [totals, setTotals] = useState({ received: 0, dialed: 0, total: 0 });
+  const [totals, setTotals] = useState({ initiated: 0, ended: 0, total: 0 });
 
   const handleChartTypeChange = (_event, newChartType) => {
     if (newChartType !== null) setChartType(newChartType);
@@ -60,17 +58,29 @@ const CallsChartCard = () => {
           }
         );
 
-        const apiData = res.data?.data || [];
-        const received = apiData.reduce((sum, item) => sum + (item.received || 0), 0);
-        const dialed = apiData.reduce((sum, item) => sum + (item.dialed || 0), 0);
-        setChartData(apiData);
-        setTotals({ received, dialed, total: received + dialed });
+        const { initiated_calls = 0, ended_calls = 0 } = res.data;
+
+        const formattedData = [
+          {
+            time: timeRange.toUpperCase(),
+            initiated: parseInt(initiated_calls, 10),
+            ended: parseInt(ended_calls, 10),
+          },
+        ];
+
+        setChartData(formattedData);
+        setTotals({
+          initiated: formattedData[0].initiated,
+          ended: formattedData[0].ended,
+          total: formattedData[0].initiated + formattedData[0].ended,
+        });
       } catch (err) {
-        console.error("Error fetching dashboard stats:", err);
+        console.error("Error fetching call stats:", err);
         setChartData([]);
-        setTotals({ received: 0, dialed: 0, total: 0 });
+        setTotals({ initiated: 0, ended: 0, total: 0 });
       }
     };
+
     fetchData();
   }, [timeRange]);
 
@@ -91,20 +101,6 @@ const CallsChartCard = () => {
         </MDTypography>
       </MDBox>
 
-      <CardHeader
-        subheader={`${totals.total} total calls in selected period`}
-        action={
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconButton size="small" aria-label="Download report">
-              <Download size={18} />
-            </IconButton>
-            <IconButton size="small" aria-label="More options">
-              <MoreVertical size={18} />
-            </IconButton>
-          </Box>
-        }
-      />
-
       <CardContent>
         <Box
           sx={{
@@ -120,18 +116,18 @@ const CallsChartCard = () => {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                Received
+                Initiated calls
               </Typography>
               <Typography variant="h6" fontWeight="bold">
-                {totals.received}
+                {totals.initiated}
               </Typography>
             </Box>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                Dialed
+                Ended calls
               </Typography>
               <Typography variant="h6" fontWeight="bold">
-                {totals.dialed}
+                {totals.ended}
               </Typography>
             </Box>
           </Box>
@@ -182,7 +178,13 @@ const CallsChartCard = () => {
                   tick={{ fontSize: 12 }}
                   stroke={theme.palette.text.secondary}
                 />
-                <YAxis tick={{ fontSize: 12 }} stroke={theme.palette.text.secondary} />
+                <YAxis
+                  label={{ value: "Calls", angle: -90, position: "insideLeft" }}
+                  tick={{ fontSize: 12 }}
+                  stroke={theme.palette.text.secondary}
+                  domain={[0, "dataMax + 43"]}
+                  allowDecimals={false}
+                />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: theme.palette.background.paper,
@@ -194,14 +196,14 @@ const CallsChartCard = () => {
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="received"
+                  dataKey="initiated"
                   stroke={theme.palette.primary.main}
                   strokeWidth={2}
                   activeDot={{ r: 6 }}
                 />
                 <Line
                   type="monotone"
-                  dataKey="dialed"
+                  dataKey="ended"
                   stroke={theme.palette.warning.main}
                   strokeWidth={2}
                   activeDot={{ r: 6 }}
@@ -215,7 +217,13 @@ const CallsChartCard = () => {
                   tick={{ fontSize: 12 }}
                   stroke={theme.palette.text.secondary}
                 />
-                <YAxis tick={{ fontSize: 12 }} stroke={theme.palette.text.secondary} />
+                <YAxis
+                  label={{ value: "Calls", angle: -90, position: "insideLeft" }}
+                  tick={{ fontSize: 12 }}
+                  stroke={theme.palette.text.secondary}
+                  domain={[0, "dataMax + 10"]}
+                  allowDecimals={false}
+                />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: theme.palette.background.paper,
@@ -225,8 +233,8 @@ const CallsChartCard = () => {
                   }}
                 />
                 <Legend />
-                <Bar dataKey="received" fill={theme.palette.primary.main} radius={[4, 4, 0, 0]} />
-                <Bar dataKey="dialed" fill={theme.palette.warning.main} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="initiated" fill={theme.palette.primary.main} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="ended" fill={theme.palette.warning.main} radius={[4, 4, 0, 0]} />
               </BarChart>
             )}
           </ResponsiveContainer>

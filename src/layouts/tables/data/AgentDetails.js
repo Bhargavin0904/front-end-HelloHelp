@@ -59,17 +59,7 @@ export default function AgentDetails() {
     );
 
   return (
-    <Card
-      sx={{
-        maxWidth: 1000,
-        // maxHeight: 800,
-        mx: "auto",
-        mt: 4,
-        p: 2,
-        borderRadius: 3,
-        background: "#f5f7fa",
-      }}
-    >
+    <Card sx={{ maxWidth: 900, mx: "auto", mt: 4, p: 2, borderRadius: 3, background: "#f5f7fa" }}>
       <Box>
         {/* Top Buttons */}
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>

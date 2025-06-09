@@ -82,17 +82,7 @@ export default function CallDetails() {
   if (!row) return <Typography>Call not found</Typography>;
 
   return (
-    <Card
-      sx={{
-        maxWidth: 1000,
-        // maxHeight: 800,
-        mx: "auto",
-        mt: 4,
-        p: 2,
-        borderRadius: 3,
-        background: "#f5f7fa",
-      }}
-    >
+    <Card sx={{ maxWidth: 900, mx: "auto", mt: 4, p: 2, borderRadius: 3, background: "#f5f7fa" }}>
       <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
         <Box sx={{ width: "100%", maxWidth: 900 }}>
           <Box>
@@ -250,6 +240,9 @@ export default function CallDetails() {
                     </Typography> */}
                     <Typography sx={{ variant: "h6", fontWeight: 400, mb: 1, fontSize: "1.1rem" }}>
                       <strong>Duration:</strong> {row.duration ?? "-"}
+                    </Typography>
+                    <Typography sx={{ variant: "h6", fontWeight: 400, mb: 1, fontSize: "1.1rem" }}>
+                      <strong>Recent Calls:</strong> {row.callDirection ?? "-"}
                     </Typography>
                   </Box>
                 </Grid>
