@@ -100,12 +100,12 @@ export default function CustomerDetails() {
           }}
         >
           <Avatar
-            src={team2}
+            // src={team2}
             sx={{
               width: 130,
               height: 130,
-              border: "5px solid #fff",
-              background: "#e3f0fc",
+              border: "5px solid #1976d2",
+              background: "#1976d2",
               position: "absolute",
               bottom: -65,
               left: "50%",

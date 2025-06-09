@@ -26,6 +26,7 @@ import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDProgress from "components/MDProgress";
 import MDBadge from "components/MDBadge";
+import PersonIcon from "@mui/icons-material/Person";
 
 // Images
 import team2 from "assets/images/team-2.jpg";
@@ -45,7 +46,9 @@ import MDButton from "components/MDButton";
 export default function data() {
   const Author = ({ image, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
+      <MDAvatar size="sm" sx={{ bgcolor: "#1976d2" }}>
+        <PersonIcon sx={{ color: "#fff" }} />
+      </MDAvatar>{" "}
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">
           {name}
