@@ -100,7 +100,7 @@ function NotificationHistory() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={12}>
+      <MDBox pt={6} pb={5}>
         <Grid container spacing={6} justifyContent="center">
           <Grid item xs={12}>
             <MDBox width="100%">

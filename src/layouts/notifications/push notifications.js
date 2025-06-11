@@ -25,6 +25,7 @@ import data from "layouts/tables/data/CustomerList";
 function Notifications() {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [campaignId, setCampaignId] = useState("");
   const [description, setDescription] = useState("");
   const [userIds, setUserIds] = useState([]);
   const [customers, setCustomers] = useState([]);
@@ -59,7 +60,7 @@ function Notifications() {
   }, []);
 
   const handleSend = async () => {
-    if (!title || !message || userIds.length === 0) {
+    if (!title || !message || !campaignId || userIds.length === 0) {
       setSnackbar({
         open: true,
         severity: "error",
@@ -77,7 +78,8 @@ function Notifications() {
           user_id: Number(id),
           title,
           body: message,
-          data: { offer_code: "HELLO20" },
+          data: { offer_code: " " },
+          campaign_id: campaignId,
         };
 
         await axios.post(
@@ -100,6 +102,8 @@ function Notifications() {
       setTitle("");
       setMessage("");
       setUserIds([]);
+      setCampaignId("");
+      setDescription("");
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
       setSnackbar({
@@ -115,7 +119,7 @@ function Notifications() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={25}>
+      <MDBox pt={6} pb={5}>
         <Grid container spacing={6} justifyContent="center">
           <Grid item xs={12}>
             <MDBox width="100%">
@@ -189,6 +193,19 @@ function Notifications() {
                     </FormControl>
 
                     <TextField
+                      label="Campaign Id"
+                      value={campaignId}
+                      onChange={(e) => setCampaignId(e.target.value.toString())}
+                      fullWidth
+                      InputProps={{
+                        sx: {
+                          borderRadius: 2,
+                          backgroundColor: isDarkMode ? "#2e2e3e" : "#f9f9f9",
+                        },
+                      }}
+                    />
+
+                    <TextField
                       label="Notification Title"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
@@ -247,6 +264,20 @@ function Notifications() {
                     </Button>
                   </Stack>
                 </MDBox>
+                <Snackbar
+                  open={snackbar.open}
+                  autoHideDuration={4000}
+                  onClose={() => setSnackbar({ ...snackbar, open: false })}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                  <Alert
+                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                    severity={snackbar.severity}
+                    sx={{ width: "100%" }}
+                  >
+                    {snackbar.message}
+                  </Alert>
+                </Snackbar>
               </Card>
             </MDBox>
           </Grid>
