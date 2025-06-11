@@ -57,7 +57,7 @@ import CallDetails from "layouts/billing/components/CallDetails";
 import AgentDetails from "layouts/tables/data/AgentDetails";
 import CustomerDetails from "layouts/tables/data/CustomerDetails";
 import ProtectedRoute from "layouts/components/ProtectedRoute";
-import AdminNotificationPage from "layouts/notifications/AdminNotification";
+// import AdminNotificationPage from "layouts/notifications/AdminNotification";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -248,14 +248,14 @@ export default function App() {
         />
 
         {/* Add admin notification route here, wrapped with ProtectedRoute if needed */}
-        <Route
+        {/* <Route
           path="/admin/notifications"
           element={
             <ProtectedRoute>
               <AdminNotificationPage />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
         {/* Wildcard route MUST be last */}
         <Route path="*" element={<Navigate to="/authentication/sign-up" />} />

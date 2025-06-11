@@ -3,8 +3,10 @@ import Dashboard from "layouts/dashboard";
 import Users from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
+import Notifications from "layouts/notifications/push notifications";
+// import NotificationHistory from "layouts/push notifications";
+import NotificationHistory from "./layouts/notifications/NotificationHistory";
+// import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
@@ -53,13 +55,21 @@ const routes = [
     component: <Notifications />,
   },
   {
-    //   // type: "collapse",
-    //   // name: "Profile",
-    //   // key: "profile",
-    //   // icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
+    type: "collapse",
+    name: "Notification History",
+    key: "notification-history",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/notification-history",
+    component: <NotificationHistory />,
   },
+  // {
+  //   //   // type: "collapse",
+  //   //   // name: "Profile",
+  //   //   // key: "profile",
+  //   //   // icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
   {
     type: "collapse",
     name: "Logout",
