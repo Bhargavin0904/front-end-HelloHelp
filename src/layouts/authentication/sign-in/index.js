@@ -23,9 +23,9 @@ import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 
 // @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
+// import FacebookIcon from "@mui/icons-material/Facebook";
+// import GitHubIcon from "@mui/icons-material/GitHub";
+// import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -38,8 +38,7 @@ import axios from "axios";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import { IMPORT } from "stylis";
+import logo from "assets/images/app_logo_horrizontal.png";
 
 function Basic() {
   const navigate = useNavigate();
@@ -100,7 +99,7 @@ function Basic() {
     }
     try {
       const response = await axios.post(
-        "https://hellohelp-update-backend.onrender.com/api/auth/login",
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/login",
         { email, password }
         // {
         //   headers: {
@@ -125,11 +124,16 @@ function Basic() {
   };
 
   return (
-    <BasicLayout image={bgImage}>
+    <BasicLayout>
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          sx={{
+            background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+            color: "white", // or any readable color
+            fontWeight: 600,
+            boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+          }}
           borderRadius="lg"
           coloredShadow="info"
           mx={2}
@@ -138,10 +142,13 @@ function Basic() {
           mb={1}
           textAlign="center"
         >
+          <img src={logo} alt="App Logo" style={{ height: "50px", marginRight: "10px" }} />
+
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+            {/* <img src={logo} alt="App Logo" style={{ height: "30px", marginRight: "10px" }} /> */}
             Login
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+          {/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
               <MDTypography component={MuiLink} href="#" variant="body1" color="white">
                 <FacebookIcon color="inherit" />
@@ -157,7 +164,7 @@ function Basic() {
                 <GoogleIcon color="inherit" />
               </MDTypography>
             </Grid>
-          </Grid>
+          </Grid> */}
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form" onSubmit={handleSignIn}>
@@ -185,20 +192,36 @@ function Basic() {
                 <Grid item xs={6}>
                   <MDTypography
                     variant="button"
-                    color="info"
                     fontWeight="medium"
-                    sx={{ cursor: "pointer", textAlign: "left" }}
-                    onClick={handleResetPassword} // changed from handleForgotPassword
+                    sx={{
+                      background: "(90deg, #000E29 0%, #000E29 100%)", // correct gradient
+                      color: "white", // text color inside the dark background
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      textAlign: "left",
+                      px: 1, // optional padding
+                      py: 0.5,
+                      borderRadius: "4px", // optional rounded corners
+                    }}
+                    onClick={handleResetPassword}
                   >
-                    Reset password?
+                    Reset Password
                   </MDTypography>
                 </Grid>
                 <Grid item xs={6} sx={{ textAlign: "right" }}>
                   <MDTypography
                     variant="button"
-                    color="info"
+                    sx={{
+                      background: "(90deg, #000E29 0%, #000E29 100%)",
+                      color: "white",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      textAlign: "left",
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: "4px",
+                    }}
                     fontWeight="medium"
-                    sx={{ cursor: "pointer" }}
                     onClick={handleForgotPassword}
                   >
                     Forgot password?
@@ -220,11 +243,23 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton type="submit" variant="gradient" color="info" fullWidth>
+              <MDButton
+                type="submit"
+                variant="gradient"
+                fullWidth
+                sx={{
+                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)",
+                  color: "#fff",
+                  fontWeight: 600,
+                  // "&:hover": {
+                  //   background: "#001131",
+                  // },
+                }}
+              >
                 login
               </MDButton>
             </MDBox>
-            <MDBox mt={3} mb={1} textAlign="center">
+            {/* <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
                 Don&apos;t have an account?{" "}
                 <MDTypography
@@ -238,7 +273,7 @@ function Basic() {
                   Register
                 </MDTypography>
               </MDTypography>
-            </MDBox>
+            </MDBox> */}
           </MDBox>
         </MDBox>
       </Card>

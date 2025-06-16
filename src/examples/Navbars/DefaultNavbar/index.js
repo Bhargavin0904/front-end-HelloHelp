@@ -79,7 +79,7 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
 
   return (
     <Container>
-      <MDBox
+      {/* <MDBox
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={3}
@@ -103,8 +103,8 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
             : rgba(darkMode ? background.sidenav : white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         })}
-      >
-        {/* <IconButton
+      > */}
+      {/* <IconButton
           edge="start"
           color="inherit"
           aria-label="menu"
@@ -113,7 +113,7 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
         >
           <Icon>menu</Icon>
         </IconButton> */}
-        <MDBox
+      {/* <MDBox
           component={Link}
           to="/"
           py={transparent ? 1.5 : 0.75}
@@ -123,8 +123,8 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
           <MDTypography fontWeight="bold" color={light ? "white" : "dark"}>
             Hello Help
           </MDTypography>
-        </MDBox>
-        {/* <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
+        </MDBox> */}
+      {/* <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
           <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
           <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
           <DefaultNavbarLink
@@ -140,7 +140,7 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
             light={light}
           />
         </MDBox> */}
-        {/* {action &&
+      {/* {action &&
           (action.type === "internal" ? (
             <MDBox display={{ xs: "none", lg: "inline-block" }}>
               <MDButton
@@ -169,7 +169,7 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
               </MDButton>
             </MDBox>
           ))} */}
-        {/* <MDBox
+      {/* <MDBox
           display={{ xs: "inline-block", lg: "none" }}
           lineHeight={0}
           py={1.5}
@@ -180,7 +180,7 @@ function DefaultNavbar({ transparent, light, action, onMenuClick }) {
         >
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
         </MDBox> */}
-      </MDBox>
+      {/* </MDBox> */}
       {/* {mobileView && <DefaultNavbarMobile open={mobileNavbar} close={closeMobileNavbar} />} */}
     </Container>
   );
@@ -215,7 +215,7 @@ DefaultNavbar.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ]),
-  onMenuClick: PropTypes.func, // <-- add this line
+  onMenuClick: PropTypes.func,
 };
 
 export default DefaultNavbar;

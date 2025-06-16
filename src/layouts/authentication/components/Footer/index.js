@@ -50,7 +50,8 @@ function Footer({ light }) {
             color={light ? "white" : "text"}
             fontSize={size.sm}
           >
-            &copy; {new Date().getFullYear()}, made with
+            &copy; {new Date().getFullYear()}
+            {/* , made with
             <MDBox fontSize={size.md} color={light ? "white" : "dark"} mb={-0.5} mx={0.25}>
               <Icon color="inherit" fontSize="inherit">
                 favorite
@@ -62,7 +63,7 @@ function Footer({ light }) {
                 &nbsp;DIRECTTV&nbsp;
               </MDTypography>
             </Link>
-            for a better web.
+            for a better web. */}
           </MDBox>
           <MDBox
             component="ul"

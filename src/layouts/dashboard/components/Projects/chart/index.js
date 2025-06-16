@@ -47,7 +47,7 @@ const CallsChartCard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://hellohelp-update-backend.onrender.com/api/call/dashboard-stats",
+          "https://lemonpeak-hellohelp-backend.onrender.com/api/call/dashboard-stats",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -92,7 +92,12 @@ const CallsChartCard = () => {
         py={3}
         px={2}
         variant="gradient"
-        bgColor="info"
+        sx={{
+          background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+          color: "white", // or any readable color
+          fontWeight: 600,
+          boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+        }}
         borderRadius="lg"
         coloredShadow="info"
       >

@@ -112,7 +112,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://hellohelp-update-backend.onrender.com/api/auth/register",
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/register",
         {
           username,
           email,

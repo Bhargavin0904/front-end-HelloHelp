@@ -67,7 +67,7 @@ function Cover() {
   };
 
   return (
-    <CoverLayout image={bgImage}>
+    <CoverLayout>
       <Card>
         <MDBox
           variant="gradient"

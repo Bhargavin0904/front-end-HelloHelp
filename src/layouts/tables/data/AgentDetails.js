@@ -30,7 +30,7 @@ export default function AgentDetails() {
       return;
     }
     axios
-      .get("https://hellohelp-update-backend.onrender.com/api/agent/agents", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/agent/agents", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -87,7 +87,7 @@ export default function AgentDetails() {
           sx={{
             width: "100%",
             height: 100,
-            background: "#1976d2",
+            background: "#000E29",
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-end",
@@ -100,8 +100,8 @@ export default function AgentDetails() {
             sx={{
               width: 130,
               height: 130,
-              border: "5px solid #1976d2",
-              background: "#1976d2",
+              border: "5px solid #fff",
+              background: "#000E29",
               position: "absolute",
               bottom: -65,
               left: "50%",
@@ -189,7 +189,7 @@ export default function AgentDetails() {
               </Box>
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Phone No:
+                  Mobile:
                 </Typography>
                 <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
                   {agent.phone || "N/A"}
@@ -197,10 +197,26 @@ export default function AgentDetails() {
               </Box>
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Location:
+                  Landline Number:
                 </Typography>
                 <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.location || "N/A"}
+                  {agent.landline_number || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Address Line1:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.address_line1 || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Address Line2:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.address_line2 || "N/A"}
                 </Typography>
               </Box>
             </Paper>
@@ -223,34 +239,42 @@ export default function AgentDetails() {
             >
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Created At:
+                  Zip Code:
                 </Typography>
                 <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.created_at || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Updated At:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.updated_at || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Status:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "error.main" }}>
-                  {agent.status || "Active"}
+                  {agent.zip_code || "N/A"}
                 </Typography>
               </Box>
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 90 }}>
-                  Department:
+                  State:
                 </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "error.main" }}>
-                  {agent.department || "Support"}
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.state || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Tv Provider Account Number:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.tv_provider_account_number || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Internet Provider Account Number:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.internet_provider_account_number || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Wireless Provider Account Number:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {agent.wireless_provider_account_number || "N/A"}
                 </Typography>
               </Box>
             </Paper>

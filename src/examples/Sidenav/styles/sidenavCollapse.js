@@ -35,7 +35,7 @@ function collapseItem(theme, ownerState) {
     padding: `${pxToRem(8)} ${pxToRem(10)}`,
     margin: `${pxToRem(1.5)} ${pxToRem(16)}`,
     borderRadius: borderRadius.md,
-    cursor: "pointer",
+    // cursor: "pointer",
     userSelect: "none",
     whiteSpace: "nowrap",
     boxShadow: active && !whiteSidenav && !darkMode && !transparentSidenav ? md : "none",

@@ -46,7 +46,7 @@ import MDButton from "components/MDButton";
 export default function data() {
   const Author = ({ image, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar size="sm" sx={{ bgcolor: "#1976d2" }}>
+      <MDAvatar size="sm" sx={{ bgcolor: "#000E29" }}>
         <PersonIcon sx={{ color: "#fff" }} />
       </MDAvatar>{" "}
       <MDBox ml={2} lineHeight={1}>
@@ -76,7 +76,7 @@ export default function data() {
       return;
     }
     axios
-      .get("https://hellohelp-update-backend.onrender.com/api/customer/customers", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -120,9 +120,13 @@ export default function data() {
               component={Link}
               to={`/customer/${customer.id}`}
               variant="text"
-              color="info"
-              // fontWeight="medium"
-              // style={{ cursor: "pointer" }}
+              sx={{
+                color: "#000E29",
+                fontWeight: 600,
+                "&:hover": {
+                  color: "#001131",
+                },
+              }}
               startIcon={<Icon>visibility</Icon>}
             >
               View

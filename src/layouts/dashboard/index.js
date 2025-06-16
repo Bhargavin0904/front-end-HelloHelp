@@ -45,7 +45,7 @@ function Dashboard() {
       change: "",
       icon: <PeopleIcon />,
       progressValue: 0,
-      progressColor: "primary",
+      progressColor: "#000E29",
     },
     {
       title: "Total Customers",
@@ -53,7 +53,7 @@ function Dashboard() {
       change: "",
       icon: <PersonAddIcon />,
       progressValue: 0,
-      progressColor: "warning",
+      progressColor: "#000E29",
     },
     {
       title: "Audio Calls",
@@ -61,7 +61,7 @@ function Dashboard() {
       change: "",
       icon: <PhoneIcon />,
       progressValue: 0,
-      progressColor: "info",
+      progressColor: "#000E29",
     },
     {
       title: "Video Calls",
@@ -69,14 +69,14 @@ function Dashboard() {
       change: "",
       icon: <VideocamIcon />,
       progressValue: 0,
-      progressColor: "success",
+      progressColor: "#000E29",
     },
   ]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("https://hellohelp-update-backend.onrender.com/api/call/dashboard-stats", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/call/dashboard-stats", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

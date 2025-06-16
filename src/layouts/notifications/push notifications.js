@@ -43,7 +43,7 @@ function Notifications() {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          "https://hellohelp-update-backend.onrender.com/api/customer/customers",
+          "https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -131,7 +131,12 @@ function Notifications() {
                   py={3}
                   px={2}
                   variant="gradient"
-                  bgColor="info"
+                  sx={{
+                    background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+                    color: "white", // or any readable color
+                    fontWeight: 600,
+                    boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+                  }}
                   borderRadius="lg"
                   coloredShadow="info"
                 >
@@ -254,7 +259,7 @@ function Notifications() {
                       disabled={sending}
                       sx={{
                         mt: 2,
-                        background: "linear-gradient(to right, #00c6ff, #0072ff)",
+                        background: "linear-gradient(to right, #000E29, #000E29)",
                         borderRadius: "8px",
                         color: "#fff",
                         fontWeight: "bold",

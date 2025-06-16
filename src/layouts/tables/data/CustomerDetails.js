@@ -30,7 +30,7 @@ export default function CustomerDetails() {
       return;
     }
     axios
-      .get("https://hellohelp-update-backend.onrender.com/api/customer/customers", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -91,7 +91,7 @@ export default function CustomerDetails() {
           sx={{
             width: "100%",
             height: 100,
-            background: "#1976d2",
+            background: "#000E29",
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-end",
@@ -104,8 +104,8 @@ export default function CustomerDetails() {
             sx={{
               width: 130,
               height: 130,
-              border: "5px solid #1976d2",
-              background: "#1976d2",
+              border: "5px solid #fff",
+              background: "#000E29",
               position: "absolute",
               bottom: -65,
               left: "50%",
@@ -191,6 +191,14 @@ export default function CustomerDetails() {
                   {customer.email || "N/A"}
                 </Typography>
               </Box>
+              {/* <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Country Code:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.country_code || "N/A"}
+                </Typography>
+              </Box> */}
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
                   Mobile:
@@ -201,17 +209,33 @@ export default function CustomerDetails() {
               </Box>
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Location:
+                  Landline Number:
                 </Typography>
                 <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {customer.location || "N/A"}
+                  {customer.landline_number || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Address Line1:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.address_line1 || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Address Line2:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.address_line2 || "N/A"}
                 </Typography>
               </Box>
             </Paper>
           </Grid>
 
           {/* Right Card */}
-          <Grid item xs={12} md={5.5}>
+          <Grid item xs={12} md={6}>
             <Paper
               elevation={1}
               sx={{
@@ -227,40 +251,56 @@ export default function CustomerDetails() {
             >
               <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Created At:
+                  Zip Code:
                 </Typography>
                 <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {customer.created_at || "N/A"}
+                  {customer.zip_code || "N/A"}
                 </Typography>
               </Box>
               <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Updated At:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {customer.updated_at || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Status:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "error.main" }}>
-                  {customer.status || "Active"}
-                </Typography>
-              </Box>
-              {/* <Box display="flex" gap={1} alignItems="center">
                 <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 90 }}>
-                  Department:
+                  State:
                 </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "error.main" }}>
-                  {customer.department || "Support"}
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.state || "N/A"}
                 </Typography>
-              </Box> */}
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 90 }}>
+                  Country:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.country || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Tv Provider Account Number:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.tv_provider_account_number || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Internet Provider Account Number:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.internet_provider_account_number || "N/A"}
+                </Typography>
+              </Box>
+              <Box display="flex" gap={1} alignItems="center">
+                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
+                  Wireless Provider Account Number:
+                </Typography>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
+                  {customer.wireless_provider_account_number || "N/A"}
+                </Typography>
+              </Box>
             </Paper>
           </Grid>
         </Grid>
-        {/*     </Paper> */}
+        {/* </Paper> */}
       </Box>
     </Card>
   );

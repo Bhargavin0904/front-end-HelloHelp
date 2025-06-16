@@ -27,21 +27,12 @@ function navbar(theme, ownerState) {
     backgroundColor:
       transparentNavbar || absolute
         ? `${transparent.main} !important`
-        : rgba(darkMode ? background.default : white.main, 0.8),
+        : darkMode
+        ? "#000E29"
+        : "#ffffff",
 
-    color: () => {
-      let color;
+    color: "white",
 
-      if (light) {
-        color = white.main;
-      } else if (transparentNavbar) {
-        color = text.main;
-      } else {
-        color = dark.main;
-      }
-
-      return color;
-    },
     top: absolute ? 0 : pxToRem(12),
     minHeight: pxToRem(75),
     display: "grid",

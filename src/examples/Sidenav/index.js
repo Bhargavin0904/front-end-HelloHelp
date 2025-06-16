@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useEffect, useState } from "react";
+import { useTheme } from "@emotion/react";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -49,8 +50,6 @@ import {
   setWhiteSidenav,
 } from "context";
 import { IconButton } from "@mui/material";
-import { Import } from "lucide-react";
-
 function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
@@ -68,18 +67,26 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
   }
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
+  const theme = useTheme();
 
   useEffect(() => {
     function handleMiniSidenav() {
-      setMiniSidenav(dispatch, window.innerWidth < 1200);
-      setTransparentSidenav(dispatch, window.innerWidth < 1200 ? false : transparentSidenav);
-      setWhiteSidenav(dispatch, window.innerWidth < 1200 ? false : whiteSidenav);
-      setShowSidenav(window.innerWidth >= 1200); // Hide Sidenav if width < 600px
+      const isMini = window.innerWidth < theme.breakpoints.values.xl;
+      const shouldShow = window.innerWidth >= theme.breakpoints.values.sm;
+      setMiniSidenav(dispatch, window.innerWidth < 100);
+      setTransparentSidenav(dispatch, window.innerWidth < 100 ? false : transparentSidenav);
+      setWhiteSidenav(dispatch, window.innerWidth < 100 ? false : whiteSidenav);
+      setShowSidenav(window.innerWidth >= 100);
+      // setMiniSidenav(dispatch, isMini);
+      // setTransparentSidenav(dispatch, !isMini && transparentSidenav);
+      // setWhiteSidenav(dispatch, !isMini && whiteSidenav);
+      // setShowSidenav(shouldShow);
     }
     window.addEventListener("resize", handleMiniSidenav);
     handleMiniSidenav();
+
     return () => window.removeEventListener("resize", handleMiniSidenav);
-  }, [dispatch, location, transparentSidenav, whiteSidenav]);
+  }, [dispatch, location, transparentSidenav, whiteSidenav, theme]);
 
   if (!showSidenav) return null;
 
@@ -151,7 +158,12 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
         }}
         sx={{
           display: { xs: "block", xl: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250 },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: 250,
+            backgroundColor: "#000E29",
+            color: "white",
+          },
         }}
       >
         <MDBox pt={3} pb={1} px={4} textAlign="center">
@@ -161,15 +173,28 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
             top={0}
             right={0}
             p={1.625}
-            onClick={onMobileClose}
-            sx={{ cursor: "pointer" }}
+            // onClick={onMobileClose}
+            // sx={{ cursor: "pointer" }}
           >
             <MDTypography variant="h6" color="secondary">
               <Icon sx={{ fontWeight: "bold" }}>close</Icon>
             </MDTypography>
           </MDBox>
           <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-            {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+            {brand && (
+              <MDBox
+                component="img"
+                src={brand}
+                alt="Brand"
+                sx={{
+                  width: "180px",
+                  maxWidth: "100%",
+                  objectFit: "contain",
+                  mx: "auto",
+                  mb: 1,
+                }}
+              />
+            )}
             <MDBox width={!brandName && "100%"}>
               <MDTypography component="h6" variant="button" fontWeight="medium" color={textColor}>
                 {brandName}
@@ -185,21 +210,14 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
         />
         <List>{renderRoutes}</List>
       </Drawer>
-      {/* <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        edge="start"
-        onClick={() => setMobileOpen(true)} // You need to pass this down as prop
-        sx={{ display: { md: "none" }, mr: 2 }}
-      >
+      {/* <IconButton onClick={() => setMobileOpen(true)} sx={{ display: { md: "none" }, mr: 2 }}>
         <Icon>menu</Icon>
       </IconButton> */}
-
       <SidenavRoot
         {...rest}
         variant="permanent"
         ownerState={{ transparentSidenav, whiteSidenav, miniSidenav, darkMode }}
-        sx={{ display: { xs: "none", xl: "block" } }}
+        sx={{ display: { xs: "none", xl: "block" }, backgroundColor: "#000E29", color: "white" }}
       >
         <MDBox pt={3} pb={1} px={4} textAlign="center">
           <MDBox
@@ -208,15 +226,28 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
             top={0}
             right={0}
             p={1.625}
-            onClick={closeSidenav}
-            sx={{ cursor: "pointer" }}
+            // onClick={closeSidenav}
+            // sx={{ cursor: "pointer" }}
           >
             <MDTypography variant="h6" color="secondary">
-              <Icon sx={{ fontWeight: "bold" }}>close</Icon>
+              <Icon sx={{ fontWeight: "bold" }}></Icon>
             </MDTypography>
           </MDBox>
           <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-            {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+            {brand && (
+              <MDBox
+                component="img"
+                src={brand}
+                alt="Brand"
+                sx={{
+                  width: "180px", // ⬅️ Adjust size here
+                  maxWidth: "100%",
+                  objectFit: "contain",
+                  mx: "auto",
+                  mb: 1,
+                }}
+              />
+            )}
             <MDBox
               width={!brandName && "100%"}
               sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}

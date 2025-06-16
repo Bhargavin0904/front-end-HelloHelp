@@ -46,7 +46,7 @@ function Users() {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
-        "https://hellohelp-update-backend.onrender.com/api/auth/register",
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/register",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       // Format your rows as needed for DataTable
@@ -70,7 +70,12 @@ function Users() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                sx={{
+                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+                  color: "white", // or any readable color
+                  fontWeight: 600,
+                  boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+                }}
                 borderRadius="lg"
                 coloredShadow="info"
                 display="flex"
@@ -85,7 +90,7 @@ function Users() {
                   color="white"
                   startIcon={<AddIcon />}
                   onClick={handleOpen}
-                  sx={{ color: "#1976d2", fontWeight: 600 }}
+                  sx={{ color: "#000E29", fontWeight: 600 }}
                 >
                   Add Agent
                 </MDButton>
@@ -125,7 +130,12 @@ function Users() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                sx={{
+                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+                  color: "white", // or any readable color
+                  fontWeight: 600,
+                  boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+                }}
                 borderRadius="lg"
                 coloredShadow="info"
               >

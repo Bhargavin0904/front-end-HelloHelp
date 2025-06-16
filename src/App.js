@@ -52,6 +52,7 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
+import logo from "assets/images/app_logo_horrizontal.png";
 
 import CallDetails from "layouts/billing/components/CallDetails";
 import AgentDetails from "layouts/tables/data/AgentDetails";
@@ -149,25 +150,25 @@ export default function App() {
 
   const configsButton = (
     <MDBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.25rem"
-      height="3.25rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
+    // display="flex"
+    // justifyContent="center"
+    // alignItems="center"
+    // width="3.25rem"
+    // height="3.25rem"
+    // // bgColor="white"
+    // shadow="sm"
+    // borderRadius="50%"
+    // position="fixed"
+    // right="2rem"
+    // bottom="2rem"
+    // zIndex={99}
+    // color="dark"
+    // sx={{ cursor: "pointer" }}
+    // onClick={handleConfiguratorOpen}
     >
-      <Icon fontSize="small" color="inherit">
+      {/* <Icon fontSize="small" color="inherit">
         settings
-      </Icon>
+      </Icon> */}
     </MDBox>
   );
 
@@ -178,17 +179,17 @@ export default function App() {
         {layout === "dashboard" && (
           <>
             <Sidenav
-              color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName="Hello Help"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
+              color="#000E29"
+              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : logo}
+              // brandName="Hello Help"
+              // routes={routes}
+              // onMouseEnter={handleOnMouseEnter}
+              // onMouseLeave={handleOnMouseLeave}
               open={mobileOpen}
-              onClose={() => setMobileOpen(false)}
+              onClose={() => setMobileOpen(true)}
             />
-            <Configurator />
-            {configsButton}
+            {/* <Configurator />
+            {configsButton} */}
           </>
         )}
         {layout === "vr" && <Configurator />}
@@ -207,21 +208,23 @@ export default function App() {
       {layout === "dashboard" && (
         <>
           <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Hello Help"
+            color="#000E29"
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : logo}
+            // brandName="Hello Help"
             routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
+            // onMouseEnter={handleOnMouseEnter}
+            // onMouseLeave={handleOnMouseLeave}
+            // open={mobileOpen}
+            // onClose={() => setMobileOpen(true)}
           />
-          <Configurator />
-          {configsButton}
+          {/* <Configurator />
+          {configsButton} */}
         </>
       )}
-      {layout === "vr" && <Configurator />}
+      {/* {layout === "vr" && <Configurator />} */}
+
       <Routes>
         {getRoutes(routes)}
-
         <Route
           path="/agent/:id"
           element={
@@ -258,7 +261,7 @@ export default function App() {
         /> */}
 
         {/* Wildcard route MUST be last */}
-        <Route path="*" element={<Navigate to="/authentication/sign-up" />} />
+        <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
       </Routes>
     </ThemeProvider>
   );

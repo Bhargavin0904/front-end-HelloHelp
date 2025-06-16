@@ -45,7 +45,7 @@ export default function CallHistory() {
       return;
     }
     axios
-      .get("https://hellohelp-update-backend.onrender.com/api/call/call-logs", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/call/call-logs", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -117,7 +117,12 @@ export default function CallHistory() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                sx={{
+                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+                  color: "white", // or any readable color
+                  fontWeight: 600,
+                  boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+                }}
                 borderRadius="lg"
                 coloredShadow="info"
               >
@@ -186,7 +191,13 @@ export default function CallHistory() {
                             component={Link}
                             to={`/CallDetails/${row.id}`}
                             variant="text"
-                            color="info"
+                            sx={{
+                              color: "#000E29",
+                              fontWeight: 600,
+                              "&:hover": {
+                                color: "#001131",
+                              },
+                            }}
                             startIcon={<Icon>visibility</Icon>}
                           >
                             View

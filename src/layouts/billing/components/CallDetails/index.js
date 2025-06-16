@@ -57,7 +57,7 @@ export default function CallDetails() {
       return;
     }
     axios
-      .get(`https://hellohelp-update-backend.onrender.com/api/call/call-logs`, {
+      .get(`https://lemonpeak-hellohelp-backend.onrender.com/api/call/call-logs`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -122,7 +122,7 @@ export default function CallDetails() {
               sx={{
                 width: "100%",
                 height: 100,
-                background: "#1976d2",
+                background: "#000E29",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

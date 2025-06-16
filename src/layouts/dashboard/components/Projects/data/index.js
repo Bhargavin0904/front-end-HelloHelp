@@ -8,6 +8,7 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import DataTable from "examples/Tables/DataTable";
 import { useTheme, useMediaQuery } from "@mui/material";
+import { GlobalStyles } from "@mui/material";
 
 // Format time to readable format
 function formatTime(dateStr) {
@@ -34,7 +35,7 @@ export default function RecentCallsTable() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("https://hellohelp-update-backend.onrender.com/api/call/call-logs", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/call/call-logs", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -93,7 +94,13 @@ export default function RecentCallsTable() {
         component={Link}
         to={`/CallDetails/${call.id}`}
         variant="text"
-        color="info"
+        sx={{
+          color: "#000E29",
+          fontWeight: 600,
+          "&:hover": {
+            color: "#001131",
+          },
+        }}
         startIcon={<Icon>visibility</Icon>}
       >
         View
@@ -102,55 +109,81 @@ export default function RecentCallsTable() {
   }));
 
   return (
-    <MDBox
-      pt={2}
-      pb={3}
-      sx={{ height: "100%", width: isMobile ? "100%" : "155%", borderRadius: 3 }}
-    >
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <Card>
-            <MDBox
-              mx={2}
-              mt={-3}
-              py={3}
-              px={2}
-              variant="gradient"
-              bgColor="info"
-              borderRadius="lg"
-              coloredShadow="info"
-            >
-              <MDTypography variant={isMobile ? "body1" : "h6"} fontWeight="bold" color="white">
-                📞 Recent Calls
-              </MDTypography>
-            </MDBox>{" "}
-            <MDBox sx={{ overflowX: isMobile ? "auto" : "visible" }}>
-              <DataTable
-                table={{
-                  columns: [
-                    { Header: "ID", accessor: "id" },
-                    { Header: "Caller", accessor: "caller_name" },
-                    { Header: "Receiver", accessor: "receiver_name" },
-                    { Header: "Call Type", accessor: "call_type" },
-                    { Header: "Status", accessor: "status" },
-                    { Header: "Time", accessor: "time" },
-                    { Header: "Duration", accessor: "duration" },
-                    { Header: "Action", accessor: "action" },
-                  ],
-                  rows: rows,
+    <>
+      <GlobalStyles
+        styles={{
+          ".MuiPaginationItem-root": {
+            color: "#000E29 !important", // Normal page numbers
+          },
+          ".MuiPaginationItem-root.Mui-selected": {
+            backgroundColor: "#000E29 !important", // Selected background
+            color: "#fff !important", // Selected text
+            fontWeight: "600 !important",
+          },
+          ".MuiPaginationItem-root:hover": {
+            backgroundColor: "#dbe4f3 !important", // Hover background (optional)
+          },
+          ".MuiPaginationItem-root.Mui-selected:hover": {
+            backgroundColor: "#001131 !important", // Hover on selected
+          },
+        }}
+      />
+
+      <MDBox
+        pt={2}
+        pb={3}
+        sx={{ height: "100%", width: isMobile ? "100%" : "155%", borderRadius: 3 }}
+      >
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                sx={{
+                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
+                  color: "white", // or any readable color
+                  fontWeight: 600,
+                  boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
                 }}
-                isSorted={true}
-                entriesPerPage={{
-                  defaultValue: 5,
-                  entries: [5, 10, 25, 50],
-                }}
-                showTotalEntries={true}
-                noEndBorder
-              />
-            </MDBox>
-          </Card>
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant={isMobile ? "body1" : "h6"} fontWeight="bold" color="white">
+                  📞 Recent Calls
+                </MDTypography>
+              </MDBox>{" "}
+              <MDBox sx={{ overflowX: isMobile ? "auto" : "visible" }}>
+                <DataTable
+                  table={{
+                    columns: [
+                      { Header: "ID", accessor: "id" },
+                      { Header: "Caller", accessor: "caller_name" },
+                      { Header: "Receiver", accessor: "receiver_name" },
+                      { Header: "Call Type", accessor: "call_type" },
+                      { Header: "Status", accessor: "status" },
+                      { Header: "Time", accessor: "time" },
+                      { Header: "Duration", accessor: "duration" },
+                      { Header: "Action", accessor: "action" },
+                    ],
+                    rows: rows,
+                  }}
+                  isSorted={true}
+                  entriesPerPage={{
+                    defaultValue: 5,
+                    entries: [5, 10, 25, 50],
+                  }}
+                  showTotalEntries={true}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-    </MDBox>
+      </MDBox>
+    </>
   );
 }
