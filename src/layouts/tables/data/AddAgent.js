@@ -93,11 +93,28 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    onChange(e); // Update parent form state
+
+    if (name === "phone") {
+      const cleanedPhone = value.replace(/\D/g, "").slice(0, 10); // digits only, max 10
+      setFormData((prev) => ({
+        ...prev,
+        [name]: cleanedPhone,
+      }));
+      onChange({ target: { name, value: cleanedPhone } });
+    } else if (name === "country_code") {
+      const cleanedCode = value.replace(/[^\d+]/g, "").slice(0, 5); // allow '+' and digits only, max 5
+      setFormData((prev) => ({
+        ...prev,
+        [name]: cleanedCode,
+      }));
+      onChange({ target: { name, value: cleanedCode } });
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      onChange(e);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -108,6 +125,14 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
       alert("Please fill all fields.");
       return;
     }
+    if (!/^\d{10}$/.test(phone)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
+    if (!/^\+?\d{1,5}$/.test(formData.country_code)) {
+      alert("Enter a valid country code, like +91 or 1.");
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -116,6 +141,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
         {
           username,
           email,
+          country_code: "",
           phone,
           password,
           is_agent: "true",
@@ -158,12 +184,23 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
             margin="normal"
           />
           <MDInput
-            type="text"
+            type="tel"
+            label="Country Code"
+            name="country_code"
+            fullWidth
+            value={formData.country_code}
+            onChange={handleChange}
+            inputProps={{ maxLength: 5 }}
+            margin="normal"
+          />
+          <MDInput
+            type="tel"
             label="Phone"
             name="phone"
             fullWidth
             value={formData.phone}
             onChange={handleChange}
+            inputProps={{ maxLength: 10 }}
             margin="normal"
           />
           <MDInput

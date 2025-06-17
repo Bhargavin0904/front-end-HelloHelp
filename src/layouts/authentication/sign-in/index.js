@@ -94,9 +94,14 @@ function Basic() {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please enter email and password.");
+      alert("Please enter password.");
       return;
     }
+    // if (!/^\d{10}$/.test(email)) {
+    //   alert("Please enter a valid 10-digit mobile number.");
+    //   return;
+    // }
+
     try {
       const response = await axios.post(
         "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/login",
@@ -108,10 +113,9 @@ function Basic() {
         // }
       );
 
-      // Save token to localStorage
       localStorage.setItem("token", response.data.token);
 
-      // alert("Signed in successfully!")
+      // alert("Signed in successfully!");
       navigate("/dashboard");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -129,10 +133,10 @@ function Basic() {
         <MDBox
           variant="gradient"
           sx={{
-            background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
-            color: "white", // or any readable color
+            background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)",
+            color: "white",
             fontWeight: 600,
-            boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+            boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)",
           }}
           borderRadius="lg"
           coloredShadow="info"
