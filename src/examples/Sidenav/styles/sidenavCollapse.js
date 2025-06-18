@@ -47,18 +47,19 @@ function collapseItem(theme, ownerState) {
     },
 
     "&:hover, &:focus": {
-      backgroundColor: () => {
-        let backgroundValue;
-
-        if (!active) {
-          backgroundValue =
-            transparentSidenav && !darkMode
-              ? grey[300]
-              : rgba(whiteSidenav ? grey[400] : white.main, 0.2);
-        }
-
-        return backgroundValue;
-      },
+      backgroundColor: "#1E3A8A",
+      //  () => {
+      //   if (!active) {
+      //     if (transparentSidenav && !darkMode) {
+      //       return grey[300];
+      //     } else if (whiteSidenav) {
+      //       return rgba(grey[400], 0.2);
+      //     } else {
+      //       return rgba(white.main, 0.2); // fallback for normal sidenav
+      //     }
+      //   }
+      //   return undefined;
+      // },
     },
   };
 }

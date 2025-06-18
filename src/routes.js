@@ -32,7 +32,7 @@ const routes = [
   {
     type: "collapse",
     name: "Call History",
-    key: "Call History",
+    key: "call-history",
     icon: <Icon fontSize="small">call</Icon>,
     route: "/call-history",
     component: <Billing />,
@@ -48,7 +48,7 @@ const routes = [
   {
     type: "collapse",
     name: "Push Notifications",
-    key: "push-notifications",
+    key: "notifications",
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,

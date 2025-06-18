@@ -240,7 +240,7 @@ function Sidenav({ color, brand, brandName, routes, mobileOpen, onMobileClose, .
                 src={brand}
                 alt="Brand"
                 sx={{
-                  width: "180px", // ⬅️ Adjust size here
+                  width: "180px",
                   maxWidth: "100%",
                   objectFit: "contain",
                   mx: "auto",
