@@ -83,7 +83,7 @@ function Notifications() {
         };
 
         await axios.post(
-          "https://hellohelp-update-backend.onrender.com/api/admin/push-notification",
+          "https://lemonpeak-hellohelp-backend.onrender.com/api/admin/push-notification",
           payload,
           {
             headers: {
