@@ -67,7 +67,12 @@ export default function useAgentTableData() {
         const agentData = response.data;
         const formattedRows = agentData.map((agent) => ({
           id: <Job title={String(agent.id)} />,
-          username: <Author image={team2} name={agent.username} email={agent.email} />,
+          username: (
+            <Author
+              image={team2}
+              name={agent.username?.charAt(0).toUpperCase() + agent.username?.slice(1)}
+            />
+          ),
           email: (
             <MDTypography variant="caption" color="text" fontWeight="medium">
               {agent.email}
@@ -75,7 +80,7 @@ export default function useAgentTableData() {
           ),
           phone: (
             <MDBox ml={-1} display="flex" alignItems="center">
-              <MDBadge color={agent.phone ? "success" : "dark"} variant="gradient" size="sm" />
+              {/* <MDBadge color={agent.phone ? "success" : "dark"} variant="gradient" size="sm" /> */}
               <MDTypography variant="caption" color="text" fontWeight="medium" ml={1}>
                 {agent.phone}
               </MDTypography>
@@ -125,7 +130,8 @@ export default function useAgentTableData() {
   return {
     columns: [
       { Header: "Id", accessor: "id", width: "10%", align: "left" },
-      { Header: "Username", accessor: "username", width: "20%", align: "left" },
+      { Header: "Firstname", accessor: "username", width: "20%", align: "left" },
+      { Header: "Lastname", accessor: "", width: "20%", align: "left" },
       { Header: "Email", accessor: "email", align: "left" },
       { Header: "Phone no", accessor: "phone", align: "center" },
       // { Header: "created at", accessor: "created_at", align: "center" },

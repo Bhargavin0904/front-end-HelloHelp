@@ -169,7 +169,7 @@ function Notifications() {
                         renderValue={(selected) =>
                           customers
                             .filter((c) => selected.includes(c.user_id))
-                            .map((c) => c.username)
+                            .map((c) => c.username?.charAt(0).toUpperCase() + c.username?.slice(1))
                             .join(", ")
                         }
                         sx={{
@@ -191,7 +191,8 @@ function Notifications() {
                         {customers.map((c) => (
                           <MenuItem key={c.user_id} value={c.user_id}>
                             <Checkbox checked={userIds.indexOf(c.user_id) > -1} />
-                            {c.user_id} ({c.username})
+                            {c.user_id} (
+                            {c.username?.charAt(0).toUpperCase() + c.username?.slice(1)})
                           </MenuItem>
                         ))}
                       </Select>

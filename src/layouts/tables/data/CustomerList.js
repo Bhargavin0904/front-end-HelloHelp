@@ -86,7 +86,12 @@ export default function data() {
         const customerData = response.data;
         const formattedRows = customerData.map((customer) => ({
           id: <Job title={String(customer.id)} />,
-          username: <Author image={team2} name={customer.username} email={customer.email} />,
+          username: (
+            <Author
+              image={team2}
+              name={customer.username?.charAt(0).toUpperCase() + customer.username?.slice(1)}
+            />
+          ),
           email: (
             <MDTypography variant="caption" color="text" fontWeight="medium">
               {customer.email}
@@ -94,12 +99,12 @@ export default function data() {
           ),
           phone_no: (
             <MDBox ml={-1}>
-              <MDBadge
+              {/* <MDBadge
                 // badgeContent={customer.phone ? "online" : "offline"}
-                color={customer.phone ? "success" : "dark"}
-                variant="gradient"
+                // color={customer.phone ? "success" : "dark"}
+                // variant="gradient"
                 size="sm"
-              />
+              /> */}
               <MDTypography variant="caption" color="text" fontWeight="medium" ml={1}>
                 {customer.phone}
               </MDTypography>
@@ -143,7 +148,8 @@ export default function data() {
   return {
     columns: [
       { Header: "Id", accessor: "id", width: "8%", align: "left" },
-      { Header: "username", accessor: "username", align: "left" },
+      { Header: "Firstname", accessor: "username", align: "left" },
+      { Header: "Lastname", accessor: "", align: "left" },
       { Header: "email", accessor: "email", align: "left" },
       { Header: "phone no", accessor: "phone_no", align: "center" },
       // { Header: "created at", accessor: "created_at", align: "center" },

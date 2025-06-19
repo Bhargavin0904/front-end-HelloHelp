@@ -196,7 +196,14 @@ export default function App() {
         <Routes>
           {getRoutes(routes)}
           <Route path="/agent/:id" element={<AgentDetails />} />
-          <Route path="/customer/:id" element={<CustomerDetails />} />
+          <Route
+            path="/customer/:id"
+            element={
+              <ProtectedRoute>
+                <CustomerDetails />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/CallDetails/:id" element={<CallDetails />} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>

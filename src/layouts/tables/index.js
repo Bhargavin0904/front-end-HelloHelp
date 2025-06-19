@@ -71,10 +71,10 @@ function Users() {
                 px={2}
                 variant="gradient"
                 sx={{
-                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)", // gradient using your color
-                  color: "white", // or any readable color
+                  background: "linear-gradient(90deg, #000E29 0%, #000E29 100%)",
+                  color: "white",
                   fontWeight: 600,
-                  boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)", // custom shadow to match color
+                  boxShadow: "0px 4px 20px rgba(0, 14, 41, 0.4)",
                 }}
                 borderRadius="lg"
                 coloredShadow="info"

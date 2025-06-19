@@ -10,17 +10,24 @@ import {
   Card,
   Button,
   Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import team2 from "assets/images/team-2.jpg";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 export default function AgentDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [agent, setAgent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -45,12 +52,43 @@ export default function AgentDetails() {
       });
   }, [id]);
 
+  const handleAgentUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const response = await axios.patch(
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/update-profile",
+        editData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data?.message === "Profile updated successfully") {
+        alert("✅ Agent profile updated!");
+        const updatedAgent = { ...agent, ...editData };
+        setAgent(updatedAgent);
+        setOpenEditDialog(false);
+      } else {
+        alert("⚠️ Update failed.");
+      }
+    } catch (err) {
+      console.error("Agent update error:", err);
+      alert("❌ Error updating agent.");
+    }
+  };
+
   if (loading)
     return (
       <Box display="flex" justifyContent="center" mt={4}>
         <CircularProgress />
       </Box>
     );
+
   if (!agent)
     return (
       <Typography align="center" mt={4}>
@@ -59,7 +97,7 @@ export default function AgentDetails() {
     );
 
   return (
-    <Card sx={{ maxWidth: 900, mx: "auto", mt: 4, p: 2, borderRadius: 3, background: "#f5f7fa" }}>
+    <Card sx={{ maxWidth: 1000, mx: "auto", mt: 4, p: 2, borderRadius: 3, background: "#f5f7fa" }}>
       <Box>
         {/* Top Buttons */}
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
@@ -70,18 +108,22 @@ export default function AgentDetails() {
             onClick={() => navigate(-1)}
             sx={{ fontWeight: 600, color: "white" }}
           >
-            Back to Users List
+            Back to Agents List
           </Button>
           <Button
             variant="contained"
             color="info"
             startIcon={<EditIcon />}
-            onClick={() => navigate("/tables")}
+            onClick={() => {
+              setEditData(agent);
+              setOpenEditDialog(true);
+            }}
             sx={{ fontWeight: 600, color: "white" }}
           >
             Edit Profile
           </Button>
         </Stack>
+
         {/* Blue Cover */}
         <Box
           sx={{
@@ -96,7 +138,6 @@ export default function AgentDetails() {
           }}
         >
           <Avatar
-            // src={team2}
             sx={{
               width: 130,
               height: 130,
@@ -111,6 +152,7 @@ export default function AgentDetails() {
             }}
           />
         </Box>
+
         {/* Name and Role */}
         <Box
           sx={{
@@ -121,7 +163,7 @@ export default function AgentDetails() {
           }}
         >
           <Typography variant="h4" fontWeight="bold" sx={{ mt: 1, color: "#222" }}>
-            {agent.username}
+            {agent.username?.charAt(0).toUpperCase() + agent.username?.slice(1)}
           </Typography>
           <Box
             sx={{
@@ -138,32 +180,11 @@ export default function AgentDetails() {
             </Typography>
           </Box>
         </Box>
-        {/* Info Card */}
-        {/* <Paper
-          elevation={2}
-          sx={{
-            mt: 6,
-            mx: "auto",
-            p: 4,
-            maxWidth: 920,
-            borderRadius: 3,
-            background: "#fff",
-          }}
-        > */}
         <Typography variant="subtitle1" fontWeight="bold" gutterBottom align="center">
           Profile Information
         </Typography>
 
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            mt: 1,
-            maxWidth: 920,
-            mx: "auto",
-            alignItems: "stretch", // Important!
-          }}
-        >
+        <Grid container spacing={2} sx={{ mt: 1, maxWidth: 920, mx: "auto" }}>
           {/* Left Card */}
           <Grid item xs={12} md={6} sx={{ display: "flex" }}>
             <Paper
@@ -179,56 +200,24 @@ export default function AgentDetails() {
                 height: "100%",
               }}
             >
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Email:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.email || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Mobile:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.phone || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Landline Number:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.landline_number || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Address Line1:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.address_line1 || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Address Line2:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.address_line2 || "N/A"}
-                </Typography>
-              </Box>
+              {" "}
+              <DetailRow label="First Name" value={agent.username} />
+              <DetailRow label="Last Name" value={agent.user_lastname} />
+              <DetailRow label="Email" value={agent.email} />
+              <DetailRow label="Country Code" value={agent.country_code} />
+              <DetailRow label="Mobile" value={agent.phone} />
+              <DetailRow label="Landline Number" value={agent.landline_number} />
+              <DetailRow label="Address Line1" value={agent.address_line1} />
             </Paper>
           </Grid>
 
           {/* Right Card */}
-          <Grid item xs={12} md={5.5}>
+          <Grid item xs={12} md={6} sx={{ display: "flex" }}>
             <Paper
               elevation={1}
               sx={{
-                p: 2,
-                borderRadius: 2,
+                p: 4,
+                borderRadius: 3,
                 background: "#fff",
                 display: "flex",
                 flexDirection: "column",
@@ -237,50 +226,151 @@ export default function AgentDetails() {
                 height: "100%",
               }}
             >
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Zip Code:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.zip_code || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 90 }}>
-                  State:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.state || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Tv Provider Account Number:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.tv_provider_account_number || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Internet Provider Account Number:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.internet_provider_account_number || "N/A"}
-                </Typography>
-              </Box>
-              <Box display="flex" gap={1} alignItems="center">
-                <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 80 }}>
-                  Wireless Provider Account Number:
-                </Typography>
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>
-                  {agent.wireless_provider_account_number || "N/A"}
-                </Typography>
-              </Box>
+              {" "}
+              <DetailRow label="Address Line2" value={agent.address_line2} />
+              <DetailRow label="Zip Code" value={agent.zip_code} />
+              <DetailRow label="State" value={agent.state} />
+              <DetailRow label="Country" value={agent.country} />
+              <DetailRow
+                label="TV Provider Account Number"
+                value={agent.tv_provider_account_number}
+              />
+              <DetailRow
+                label="Internet Provider Account Number"
+                value={agent.internet_provider_account_number}
+              />
+              <DetailRow
+                label="Wireless Provider Account Number"
+                value={agent.wireless_provider_account_number}
+              />
             </Paper>
           </Grid>
         </Grid>
       </Box>
+
+      {/* Edit Dialog */}
+      <Dialog
+        open={openEditDialog}
+        onClose={() => setOpenEditDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Edit Agent Details</DialogTitle>
+        <DialogContent dividers>
+          <Box display="flex" flexDirection="column" gap={2} mt={1}>
+            <TextField
+              label="First Name"
+              value={editData.username || ""}
+              fullWidth
+              InputProps={{ readOnly: true }}
+            />
+            <TextField
+              label="Last Name"
+              value={editData.user_lastname || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, user_lastname: e.target.value })}
+            />
+            <TextField
+              label="Country Code"
+              value={editData.country_code || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, country_code: e.target.value })}
+            />
+            <TextField
+              label="Phone"
+              value={editData.phone || ""}
+              fullWidth
+              InputProps={{ readOnly: true }}
+            />
+            <TextField
+              label="Email"
+              value={editData.email || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+            />
+            <TextField
+              label="Landline Number"
+              value={editData.landline_number || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, landline_number: e.target.value })}
+            />
+            <TextField
+              label="Address Line 1"
+              value={editData.address_line1 || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, address_line1: e.target.value })}
+            />
+            <TextField
+              label="Address Line 2"
+              value={editData.address_line2 || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, address_line2: e.target.value })}
+            />
+            <TextField
+              label="Zip Code"
+              value={editData.zip_code || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, zip_code: e.target.value })}
+            />
+            <TextField
+              label="State"
+              value={editData.state || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, state: e.target.value })}
+            />
+            <TextField
+              label="Country"
+              value={editData.country || ""}
+              fullWidth
+              onChange={(e) => setEditData({ ...editData, country: e.target.value })}
+            />
+            <TextField
+              label="TV Provider Account Number"
+              value={editData.tv_provider_account_number || ""}
+              fullWidth
+              onChange={(e) =>
+                setEditData({ ...editData, tv_provider_account_number: e.target.value })
+              }
+            />
+            <TextField
+              label="Internet Provider Account Number"
+              value={editData.internet_provider_account_number || ""}
+              fullWidth
+              onChange={(e) =>
+                setEditData({ ...editData, internet_provider_account_number: e.target.value })
+              }
+            />
+            <TextField
+              label="Wireless Provider Account Number"
+              value={editData.wireless_provider_account_number || ""}
+              fullWidth
+              onChange={(e) =>
+                setEditData({ ...editData, wireless_provider_account_number: e.target.value })
+              }
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEditDialog(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleAgentUpdate}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }
+
+const DetailRow = ({ label, value }) => (
+  <Box display="flex" gap={1} alignItems="center" mb={1}>
+    <Typography color="text.secondary" sx={{ fontSize: "0.95rem", minWidth: 150 }}>
+      {label}:
+    </Typography>
+    <Typography sx={{ fontSize: "1rem", fontWeight: 500 }}>{value || "-"}</Typography>
+  </Box>
+);
+
+DetailRow.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

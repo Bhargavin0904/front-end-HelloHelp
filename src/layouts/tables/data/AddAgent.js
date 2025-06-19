@@ -119,9 +119,9 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, email, phone, password } = formData;
+    const { username, user_lastname, email, phone, password } = formData;
 
-    if (!username || !email || !phone || !password) {
+    if (!username || !user_lastname || !email || !phone || !password) {
       alert("Please fill all fields.");
       return;
     }
@@ -140,11 +140,12 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
         "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/register",
         {
           username,
+          user_lastname,
           email,
-          country_code: "",
+          country_code: formData.country_code, // FIXED
           phone,
           password,
-          is_agent: "true",
+          is_agent: true, // boolean instead of string if your backend expects it
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -167,10 +168,19 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
         <MDBox pt={3} px={3}>
           <MDInput
             type="text"
-            label="Username"
+            label="First Name"
             name="username"
             fullWidth
             value={formData.username}
+            onChange={handleChange}
+            margin="normal"
+          />
+          <MDInput
+            type="text"
+            label="Last Name"
+            name="user_lastname"
+            fullWidth
+            value={formData.user_lastname}
             onChange={handleChange}
             margin="normal"
           />
@@ -195,7 +205,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
           />
           <MDInput
             type="tel"
-            label="Phone"
+            label="Phone Number"
             name="phone"
             fullWidth
             value={formData.phone}
