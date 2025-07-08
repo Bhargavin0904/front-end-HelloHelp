@@ -104,7 +104,7 @@ export default function CustomerDetails() {
       );
 
       if (response.data?.message === "Profile updated successfully") {
-        alert("✅ Profile updated successfully!");
+        alert("✅ Customer Profile updated!");
         const updatedCustomer = { ...customer, ...editData };
         setCustomer(updatedCustomer);
         localStorage.setItem("customer_data", JSON.stringify(updatedCustomer));

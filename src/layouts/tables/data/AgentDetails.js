@@ -37,7 +37,7 @@ export default function AgentDetails() {
       return;
     }
     axios
-      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/agent/agents", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/agent/agents ", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
