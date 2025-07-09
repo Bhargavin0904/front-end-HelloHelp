@@ -47,7 +47,7 @@ const CallsChartCard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://lemonpeak-hellohelp-backend.onrender.com/api/call/dashboard-stats",
+          "http://54.226.150.175:3000/api/call/dashboard-stats",
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -67,7 +67,7 @@ function NotificationHistory() {
       try {
         const token = localStorage.getItem("token"); // 🔐 Get token from localStorage
         const response = await axios.get(
-          "https://lemonpeak-hellohelp-backend.onrender.com/api/admin/notification-history",
+          "http://54.226.150.175:3000/api/admin/notification-history",
           {
             headers: {
               Authorization: `Bearer ${token}`,

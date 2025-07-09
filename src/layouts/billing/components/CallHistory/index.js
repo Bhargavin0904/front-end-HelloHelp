@@ -45,7 +45,7 @@ export default function CallHistory() {
       return;
     }
     axios
-      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/call/call-logs", {
+      .get("http://54.226.150.175:3000/api/call/call-logs", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
