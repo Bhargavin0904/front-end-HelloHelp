@@ -37,7 +37,7 @@ export default function AgentDetails() {
       return;
     }
     axios
-      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/agent/agents ", {
+      .get("http://54.226.150.175:3000/api/agent/agents ", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -58,7 +58,7 @@ export default function AgentDetails() {
 
     try {
       const response = await axios.patch(
-        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/update-profile",
+        "http://54.226.150.175:3000/api/auth/update-profile",
         editData,
         {
           headers: {
@@ -262,72 +262,96 @@ export default function AgentDetails() {
               label="First Name"
               value={editData.username || ""}
               fullWidth
-              InputProps={{ readOnly: true }}
+              // InputProps={{ readOnly: true }}
+              disabled
             />
             <TextField
               label="Last Name"
               value={editData.user_lastname || ""}
               fullWidth
+              inputProps={{ maxLength: 25 }}
               onChange={(e) => setEditData({ ...editData, user_lastname: e.target.value })}
             />
             <TextField
               label="Country Code"
               value={editData.country_code || ""}
               fullWidth
+              inputProps={{
+                maxLength: 5,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
               onChange={(e) => setEditData({ ...editData, country_code: e.target.value })}
             />
             <TextField
               label="Phone"
               value={editData.phone || ""}
               fullWidth
-              InputProps={{ readOnly: true }}
+              // InputProps={{ readOnly: true }}
+              disabled
             />
             <TextField
               label="Email"
               value={editData.email || ""}
               fullWidth
+              inputProps={{ maxLength: 50 }}
               onChange={(e) => setEditData({ ...editData, email: e.target.value })}
             />
             <TextField
               label="Landline Number"
               value={editData.landline_number || ""}
               fullWidth
+              inputProps={{
+                maxLength: 15,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
               onChange={(e) => setEditData({ ...editData, landline_number: e.target.value })}
             />
             <TextField
               label="Address Line 1"
               value={editData.address_line1 || ""}
               fullWidth
+              inputProps={{ maxLength: 50 }}
               onChange={(e) => setEditData({ ...editData, address_line1: e.target.value })}
             />
             <TextField
               label="Address Line 2"
               value={editData.address_line2 || ""}
               fullWidth
+              inputProps={{ maxLength: 50 }}
               onChange={(e) => setEditData({ ...editData, address_line2: e.target.value })}
             />
             <TextField
               label="Zip Code"
               value={editData.zip_code || ""}
               fullWidth
+              inputProps={{
+                maxLength: 10,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
               onChange={(e) => setEditData({ ...editData, zip_code: e.target.value })}
             />
             <TextField
               label="State"
               value={editData.state || ""}
               fullWidth
+              inputProps={{ maxLength: 15 }}
               onChange={(e) => setEditData({ ...editData, state: e.target.value })}
             />
             <TextField
               label="Country"
               value={editData.country || ""}
               fullWidth
+              inputProps={{ maxLength: 15 }}
               onChange={(e) => setEditData({ ...editData, country: e.target.value })}
             />
             <TextField
               label="TV Provider Account Number"
               value={editData.tv_provider_account_number || ""}
               fullWidth
+              inputProps={{ maxLength: 12 }}
               onChange={(e) =>
                 setEditData({ ...editData, tv_provider_account_number: e.target.value })
               }
@@ -336,6 +360,7 @@ export default function AgentDetails() {
               label="Internet Provider Account Number"
               value={editData.internet_provider_account_number || ""}
               fullWidth
+              inputProps={{ maxLength: 12 }}
               onChange={(e) =>
                 setEditData({ ...editData, internet_provider_account_number: e.target.value })
               }
@@ -344,6 +369,7 @@ export default function AgentDetails() {
               label="Wireless Provider Account Number"
               value={editData.wireless_provider_account_number || ""}
               fullWidth
+              inputProps={{ maxLength: 12 }}
               onChange={(e) =>
                 setEditData({ ...editData, wireless_provider_account_number: e.target.value })
               }

@@ -69,14 +69,14 @@ export default function data() {
   const [rows, setRows] = React.useState([]);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token"); // Get token from storage
+    const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found in localStorage");
-      setRows([]); // Optionally clear rows if not authenticated
+      setRows([]);
       return;
     }
     axios
-      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers", {
+      .get("http://54.226.150.175:3000/api/customer/customers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
