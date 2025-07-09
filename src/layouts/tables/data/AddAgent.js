@@ -1,120 +1,49 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import { DialogContent, TextField, DialogActions, Button } from "@mui/material";
-
-// export default function AddAgent({ form, onChange, onSubmit, onCancel }) {
-//   return (
-//     <form onSubmit={onSubmit}>
-//       <DialogContent>
-//         <TextField
-//           margin="dense"
-//           label="Username"
-//           name="username"
-//           fullWidth
-//           required
-//           value={form.username}
-//           onChange={onChange}
-//         />
-//         <TextField
-//           margin="dense"
-//           label="Email"
-//           name="email"
-//           type="email"
-//           fullWidth
-//           required
-//           value={form.email}
-//           onChange={onChange}
-//         />
-//         <TextField
-//           margin="dense"
-//           label="Phone No"
-//           name="phone"
-//           fullWidth
-//           required
-//           value={form.phone}
-//           onChange={onChange}
-//         />
-//         <TextField
-//           margin="dense"
-//           label="Department"
-//           name="department"
-//           fullWidth
-//           required
-//           value={form.department}
-//           onChange={onChange}
-//         />
-//         <TextField
-//           margin="dense"
-//           label="Location"
-//           name="location"
-//           fullWidth
-//           required
-//           value={form.location}
-//           onChange={onChange}
-//         />
-//       </DialogContent>
-//       {/* <DialogActions>
-//             <Button onClick={onCancel}>Cancel</Button>
-//             <Button type="submit" variant="contained" color="info">
-//             Add
-//             </Button>
-//         </DialogActions> */}
-//     </form>
-//   );
-// }
-
-// AddAgent.propTypes = {
-//   form: PropTypes.shape({
-//     username: PropTypes.string,
-//     email: PropTypes.string,
-//     phone: PropTypes.string,
-//     department: PropTypes.string,
-//     location: PropTypes.string,
-//   }).isRequired,
-//   onChange: PropTypes.func.isRequired,
-//   onSubmit: PropTypes.func,
-//   onCancel: PropTypes.func,
-// };
-
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-// import CoverLayout from "layouts/authentication/components/CoverLayout";
-// import bgImage from "assets/images/bg-sign-up-cover.jpeg";
-import React, { useState } from "react";
 import axios from "axios";
-// import { Add } from "@mui/icons-material";
-import PropTypes from "prop-types";
 
 function AddAgent({ form, onChange, onAgentAdded, onClose }) {
   const [formData, setFormData] = useState(form);
+  const [passwordValidation, setPasswordValidation] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    special: false,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "phone") {
-      const cleanedPhone = value.replace(/\D/g, "").slice(0, 10); // digits only, max 10
-      setFormData((prev) => ({
-        ...prev,
-        [name]: cleanedPhone,
-      }));
+      const cleanedPhone = value.replace(/\D/g, "").slice(0, 10);
+      setFormData((prev) => ({ ...prev, [name]: cleanedPhone }));
       onChange({ target: { name, value: cleanedPhone } });
     } else if (name === "country_code") {
-      const cleanedCode = value.replace(/[^\d+]/g, "").slice(0, 5); // allow '+' and digits only, max 5
-      setFormData((prev) => ({
-        ...prev,
-        [name]: cleanedCode,
-      }));
+      const cleanedCode = value.replace(/[^\d+]/g, "").slice(0, 5);
+      setFormData((prev) => ({ ...prev, [name]: cleanedCode }));
       onChange({ target: { name, value: cleanedCode } });
+    } else if (name === "password") {
+      // update form and validate password
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      validatePassword(value);
+      onChange(e);
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
       onChange(e);
     }
+  };
+
+  const validatePassword = (password) => {
+    setPasswordValidation({
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -133,6 +62,11 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
       alert("Enter a valid country code, like +91 or 1.");
       return;
     }
+    const { length, uppercase, lowercase, special } = passwordValidation;
+    if (!length || !uppercase || !lowercase || !special) {
+      alert("Password does not meet the required conditions.");
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -142,21 +76,18 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
           username,
           user_lastname,
           email,
-          country_code: formData.country_code, // FIXED
+          country_code: formData.country_code,
           phone,
           password,
-          is_agent: true, // boolean instead of string if your backend expects it
+          is_agent: true,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      // alert("Agent added successfully!");
       if (onAgentAdded) onAgentAdded();
       if (onClose) onClose();
     } catch (error) {
-      // console.error("Add agent error:", error.response?.data || error.message);
       alert("Failed to add agent.");
       return false;
     }
@@ -173,6 +104,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
             fullWidth
             value={formData.username}
             onChange={handleChange}
+            inputProps={{ maxLength: 50 }}
             margin="normal"
           />
           <MDInput
@@ -182,6 +114,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
             fullWidth
             value={formData.user_lastname}
             onChange={handleChange}
+            inputProps={{ maxLength: 50 }}
             margin="normal"
           />
           <MDInput
@@ -191,6 +124,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
             fullWidth
             value={formData.email}
             onChange={handleChange}
+            inputProps={{ maxLength: 50 }}
             margin="normal"
           />
           <MDInput
@@ -220,8 +154,26 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
             fullWidth
             value={formData.password}
             onChange={handleChange}
+            inputProps={{ maxLength: 20 }}
             margin="normal"
           />
+          <MDBox mt={1} mb={2} color="text.secondary">
+            <ul style={{ margin: 0, paddingLeft: "20px" }}>
+              <li style={{ color: passwordValidation.length ? "green" : "red" }}>
+                Minimum 8 characters
+              </li>
+              <li style={{ color: passwordValidation.uppercase ? "green" : "red" }}>
+                At least 1 uppercase letter
+              </li>
+              <li style={{ color: passwordValidation.lowercase ? "green" : "red" }}>
+                At least 1 lowercase letter
+              </li>
+              <li style={{ color: passwordValidation.special ? "green" : "red" }}>
+                At least 1 special character
+              </li>
+            </ul>
+          </MDBox>
+
           <MDBox mt={3} mb={2} display="flex" justifyContent="space-between">
             <MDButton type="submit" variant="gradient" color="info">
               Add

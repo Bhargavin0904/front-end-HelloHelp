@@ -46,17 +46,14 @@ const CallsChartCard = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
-          "http://54.226.150.175:3000/api/call/dashboard-stats",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            params: {
-              timeRange,
-            },
-          }
-        );
+        const res = await axios.get("http://54.226.150.175:3000/api/call/dashboard-stats", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            timeRange,
+          },
+        });
 
         const { initiated_calls = 0, ended_calls = 0 } = res.data;
 

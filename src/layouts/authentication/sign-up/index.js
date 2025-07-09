@@ -37,15 +37,12 @@ function Cover() {
     }
 
     try {
-      const response = await axios.post(
-        "http://54.226.150.175:3000/api/auth/register",
-        {
-          username,
-          email,
-          phone,
-          password,
-        }
-      );
+      const response = await axios.post("http://54.226.150.175:3000/api/auth/register", {
+        username,
+        email,
+        phone,
+        password,
+      });
 
       alert("Registration successful!");
       navigate("/authentication/sign-in");
