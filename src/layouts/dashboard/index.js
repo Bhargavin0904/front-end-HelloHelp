@@ -82,6 +82,8 @@ function Dashboard() {
       .then((res) => {
         // Adjust this mapping based on your actual API response structure
         const data = res.data;
+        console.log("Dashboard Stats Data:", data); // Log the data for debugging
+
         setStats([
           {
             title: "Total Agents",
