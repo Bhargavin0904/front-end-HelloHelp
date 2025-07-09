@@ -168,6 +168,9 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
               <li style={{ color: passwordValidation.lowercase ? "green" : "red" }}>
                 At least 1 lowercase letter
               </li>
+              <li style={{ color: passwordValidation.number ? "green" : "red" }}>
+                At least 1 number
+              </li>
               <li style={{ color: passwordValidation.special ? "green" : "red" }}>
                 At least 1 special character
               </li>

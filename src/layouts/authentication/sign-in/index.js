@@ -22,11 +22,6 @@ import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 
-// @mui icons
-// import FacebookIcon from "@mui/icons-material/Facebook";
-// import GitHubIcon from "@mui/icons-material/GitHub";
-// import GoogleIcon from "@mui/icons-material/Google";
-
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -45,18 +40,9 @@ function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
-  // const handleSignIn = (e) => {
-  //   e.preventDefault();
-  //   if (email && password) {
-  //     alert("Signed in successfully!");
-  //     navigate("/dashboard");
-  //   } else {
-  //     alert("Please enter email and password.");
-  //   }
-  // };
 
   const handleResetPassword = async () => {
     // const email = prompt("Enter your email:");
@@ -66,7 +52,7 @@ function Basic() {
     if (oldPassword && newPassword && token) {
       try {
         await axios.post(
-          "https://hellohelp-update-backend.onrender.com/api/auth/reset-password",
+          "http://54.226.150.175:3000/api/auth/reset-password",
           { oldPassword, newPassword },
           {
             headers: {
@@ -86,7 +72,6 @@ function Basic() {
     const userEmail = prompt("Please enter your email to reset your password:");
     if (userEmail) {
       alert(`Password reset link has been sent to ${userEmail}`);
-      // In real implementation, trigger backend password reset email.
     }
   };
 
@@ -94,34 +79,23 @@ function Basic() {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please enter password.");
+      setError("Please enter your email and password.");
       return;
     }
-    // if (!/^\d{10}$/.test(email)) {
-    //   alert("Please enter a valid 10-digit mobile number.");
-    //   return;
-    // }
-
+    setError(false);
     try {
-      const response = await axios.post(
-        "http://54.226.150.175:3000/api/auth/login",
-        { email, password }
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
-      );
+      const response = await axios.post("http://54.226.150.175:3000/api/auth/login", {
+        email,
+        password,
+      });
 
       localStorage.setItem("token", response.data.token);
-
-      // alert("Signed in successfully!");
       navigate("/dashboard");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);
+        setError(error.response.data.message);
       } else {
-        alert("An error occurred. Please try again later.");
+        setError("An error occurred. Please try again later.");
       }
       console.error("Login error:", error);
     }
@@ -149,26 +123,8 @@ function Basic() {
           <img src={logo} alt="App Logo" style={{ height: "50px", marginRight: "10px" }} />
 
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            {/* <img src={logo} alt="App Logo" style={{ height: "30px", marginRight: "10px" }} /> */}
             Login
           </MDTypography>
-          {/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GitHubIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GoogleIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-          </Grid> */}
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form" onSubmit={handleSignIn}>
@@ -189,7 +145,13 @@ function Basic() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {error && (
+                <MDTypography variant="caption" color="error">
+                  {error}
+                </MDTypography>
+              )}
             </MDBox>
+
             {/* Reset Password & Forget Password */}
             <MDBox mb={2}>
               <Grid container>
