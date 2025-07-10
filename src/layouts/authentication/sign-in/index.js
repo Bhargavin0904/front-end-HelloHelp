@@ -162,7 +162,13 @@ function Basic() {
                 }}
               />
             </MDBox>
-
+            {error && (
+              <MDBox mb={2}>
+                <MDTypography variant="caption" color="error">
+                  {error}
+                </MDTypography>
+              </MDBox>
+            )}
             {/* Reset Password & Forget Password */}
             <MDBox mb={2}>
               <Grid container>

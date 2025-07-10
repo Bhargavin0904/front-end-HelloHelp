@@ -97,21 +97,39 @@ export default function useAgentTableData() {
           //   </MDTypography>
           // ),
           action: (
-            <MDButton
-              component={Link}
-              to={`/agent/${agent.id}`}
-              variant="text"
-              sx={{
-                color: "#000E29",
-                fontWeight: 600,
-                "&:hover": {
-                  color: "#001131",
-                },
-              }}
-              startIcon={<Icon>visibility</Icon>}
-            >
-              View
-            </MDButton>
+            <>
+              <MDButton
+                component={Link}
+                to={`/agent/${agent.id}`}
+                variant="text"
+                sx={{
+                  color: "#000E29",
+                  fontWeight: 600,
+                  "&:hover": {
+                    color: "#001131",
+                  },
+                }}
+                startIcon={<Icon>visibility</Icon>}
+              >
+                View
+              </MDButton>
+
+              {/* <MDButton
+                onClick={() => handleDelete(agent.id)}
+                variant="text"
+                sx={{
+                  color: "#B00020",
+                  fontWeight: 600,
+                  ml: 1,
+                  "&:hover": {
+                    color: "#7A0015",
+                  },
+                }}
+                startIcon={<Icon>delete</Icon>}
+              >
+                Delete
+              </MDButton> */}
+            </>
           ),
         }));
         // console.log("Formatted Rows:", formattedRows);

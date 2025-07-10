@@ -84,60 +84,71 @@ export default function data() {
       .then((response) => {
         const sortedData = response.data.sort((a, b) => b.id - a.id);
         const customerData = response.data;
-        const formattedRows = customerData.map((customer) => ({
-          id: <Job title={String(customer.id)} />,
-          username: (
-            <Author
-              image={team2}
-              name={customer.username?.charAt(0).toUpperCase() + customer.username?.slice(1)}
-            />
-          ),
-          email: (
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              {customer.email}
-            </MDTypography>
-          ),
-          phone_no: (
-            <MDBox ml={-1}>
-              {/* <MDBadge
+        const formattedRows = customerData.map((customer) => {
+          console.log(
+            "ssssssssssssssssssssss",
+
+            customer.id,
+            customer.username,
+            customer.user_lastname,
+            customer.email,
+            customer.phone
+          );
+          return {
+            id: <Job title={String(customer.id)} />,
+            username: (
+              <Author
+                image={team2}
+                name={customer.username?.charAt(0).toUpperCase() + customer.username?.slice(1)}
+              />
+            ),
+            email: (
+              <MDTypography variant="caption" color="text" fontWeight="medium">
+                {customer.email}
+              </MDTypography>
+            ),
+            phone_no: (
+              <MDBox ml={-1}>
+                {/* <MDBadge
                 // badgeContent={customer.phone ? "online" : "offline"}
                 // color={customer.phone ? "success" : "dark"}
                 // variant="gradient"
                 size="sm"
               /> */}
-              <MDTypography variant="caption" color="text" fontWeight="medium" ml={1}>
-                {customer.phone}
-              </MDTypography>
-            </MDBox>
-          ),
-          // created_at: (
-          //   <MDTypography variant="caption" color="text" fontWeight="medium">
-          //     {customer.created_at}
-          //   </MDTypography>
-          // ),
-          // updated_at: (
-          //   <MDTypography variant="caption" color="text" fontWeight="medium">
-          //     {customer.updated_at}
-          //   </MDTypography>
-          // ),
-          action: (
-            <MDButton
-              component={Link}
-              to={`/customer/${customer.id}`}
-              variant="text"
-              sx={{
-                color: "#000E29",
-                fontWeight: 600,
-                "&:hover": {
-                  color: "#001131",
-                },
-              }}
-              startIcon={<Icon>visibility</Icon>}
-            >
-              View
-            </MDButton>
-          ),
-        }));
+                <MDTypography variant="caption" color="text" fontWeight="medium" ml={1}>
+                  {customer.phone}
+                </MDTypography>
+              </MDBox>
+            ),
+            // created_at: (
+            //   <MDTypography variant="caption" color="text" fontWeight="medium">
+            //     {customer.created_at}
+            //   </MDTypography>
+            // ),
+            // updated_at: (
+            //   <MDTypography variant="caption" color="text" fontWeight="medium">
+            //     {customer.updated_at}
+            //   </MDTypography>
+            // ),
+            action: (
+              <MDButton
+                component={Link}
+                to={`/customer/${customer.id}`}
+                variant="text"
+                sx={{
+                  color: "#000E29",
+                  fontWeight: 600,
+                  "&:hover": {
+                    color: "#001131",
+                  },
+                }}
+                startIcon={<Icon>visibility</Icon>}
+              >
+                View
+              </MDButton>
+            ),
+          };
+        });
         setRows(formattedRows);
       })
       .catch((error) => {

@@ -15,6 +15,8 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -33,6 +35,8 @@ export default function CustomerDetails() {
   const [loading, setLoading] = useState(true);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [editData, setEditData] = useState({});
+  const [saving, setSaving] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
   useEffect(() => {
     const stored = localStorage.getItem("customer_data");
@@ -77,21 +81,34 @@ export default function CustomerDetails() {
     const { email, landline_number } = editData;
 
     if (!isValidEmail(email)) {
-      alert("❌ Please enter a valid email address.");
+      setSnackbar({
+        open: true,
+        message: "Please enter a valid email address.",
+        severity: "error",
+      });
       return;
     }
 
     if (editData.phone && !isValidUSPhone(editData.phone)) {
-      alert("❌ Mobile number must be a valid 10-digit US number.");
+      setSnackbar({
+        open: true,
+        message: "Mobile number must be a valid 10-digit US number.",
+        severity: "error",
+      });
       return;
     }
 
     if (landline_number && !isValidUSPhone(landline_number)) {
-      alert("❌ Landline number must be a valid 10-digit US number.");
+      setSnackbar({
+        open: true,
+        message: "Landline number must be a valid 10-digit US number.",
+        severity: "error",
+      });
       return;
     }
 
     try {
+      setSaving(true);
       const response = await axios.patch(
         "http://54.226.150.175:3000/api/auth/update-profile",
         editData,
@@ -104,17 +121,19 @@ export default function CustomerDetails() {
       );
 
       if (response.data?.message === "Profile updated successfully") {
-        alert("✅ Customer Profile updated!");
         const updatedCustomer = { ...customer, ...editData };
         setCustomer(updatedCustomer);
         localStorage.setItem("customer_data", JSON.stringify(updatedCustomer));
+        setSnackbar({ open: true, message: "Customer profile updated!", severity: "success" });
         setOpenEditDialog(false);
       } else {
-        alert("⚠️ Failed to update profile.");
+        setSnackbar({ open: true, message: "Failed to update profile.", severity: "warning" });
       }
     } catch (err) {
       console.error("Error updating profile:", err);
-      alert("❌ Error updating profile.");
+      setSnackbar({ open: true, message: "Error updating profile.", severity: "error" });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -190,7 +209,9 @@ export default function CustomerDetails() {
               fontSize: 60,
               boxShadow: 3,
             }}
-          />
+          >
+            {customer.username?.charAt(0).toUpperCase()}
+          </Avatar>
         </Box>
 
         <Box
@@ -225,21 +246,8 @@ export default function CustomerDetails() {
         </Typography>
 
         <Grid container spacing={2} sx={{ mt: 1, maxWidth: 920, mx: "auto" }}>
-          {/* Left Card */}
-          <Grid item xs={12} md={6} sx={{ display: "flex" }}>
-            <Paper
-              elevation={2}
-              sx={{
-                p: 4,
-                borderRadius: 3,
-                background: "#fff",
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                width: "100%",
-                height: "100%",
-              }}
-            >
+          <Grid item xs={12} md={6}>
+            <Paper elevation={2} sx={{ p: 4, borderRadius: 3, background: "#fff", gap: 2 }}>
               <DetailRow label="Email" value={customer.email} />
               <DetailRow label="Country Code" value={customer.country_code} />
               <DetailRow label="Mobile" value={customer.phone} />
@@ -248,20 +256,8 @@ export default function CustomerDetails() {
               <DetailRow label="Address Line2" value={customer.address_line2} />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6} sx={{ display: "flex" }}>
-            <Paper
-              elevation={1}
-              sx={{
-                p: 4,
-                borderRadius: 3,
-                background: "#fff",
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                width: "100%",
-                height: "100%",
-              }}
-            >
+          <Grid item xs={12} md={6}>
+            <Paper elevation={1} sx={{ p: 4, borderRadius: 3, background: "#fff", gap: 2 }}>
               <DetailRow label="Zip Code" value={customer.zip_code} />
               <DetailRow label="State" value={customer.state} />
               <DetailRow label="Country" value={customer.country} />
@@ -304,11 +300,6 @@ export default function CustomerDetails() {
               label="Country Code"
               value={editData.country_code || ""}
               fullWidth
-              inputProps={{
-                maxLength: 5,
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
               onChange={(e) => setEditData({ ...editData, country_code: e.target.value })}
             />
             <TextField label="Phone" value={editData.phone || ""} fullWidth disabled />
@@ -316,64 +307,48 @@ export default function CustomerDetails() {
               label="Email"
               value={editData.email || ""}
               fullWidth
-              inputProps={{ maxLength: 50 }}
               onChange={(e) => setEditData({ ...editData, email: e.target.value })}
             />
             <TextField
               label="Landline Number"
               value={editData.landline_number || ""}
               fullWidth
-              inputProps={{
-                maxLength: 15,
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
               onChange={(e) => setEditData({ ...editData, landline_number: e.target.value })}
             />
             <TextField
               label="Address Line 1"
               value={editData.address_line1 || ""}
               fullWidth
-              inputProps={{ maxLength: 50 }}
               onChange={(e) => setEditData({ ...editData, address_line1: e.target.value })}
             />
             <TextField
               label="Address Line 2"
               value={editData.address_line2 || ""}
               fullWidth
-              inputProps={{ maxLength: 50 }}
               onChange={(e) => setEditData({ ...editData, address_line2: e.target.value })}
             />
             <TextField
               label="Zip Code"
               value={editData.zip_code || ""}
               fullWidth
-              inputProps={{
-                maxLength: 10,
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
               onChange={(e) => setEditData({ ...editData, zip_code: e.target.value })}
             />
             <TextField
               label="State"
               value={editData.state || ""}
               fullWidth
-              inputProps={{ maxLength: 15 }}
               onChange={(e) => setEditData({ ...editData, state: e.target.value })}
             />
             <TextField
               label="Country"
               value={editData.country || ""}
               fullWidth
-              inputProps={{ maxLength: 15 }}
               onChange={(e) => setEditData({ ...editData, country: e.target.value })}
             />
             <TextField
               label="TV Provider Account Number"
               value={editData.tv_provider_account_number || ""}
               fullWidth
-              inputProps={{ maxLength: 12 }}
               onChange={(e) =>
                 setEditData({ ...editData, tv_provider_account_number: e.target.value })
               }
@@ -382,7 +357,6 @@ export default function CustomerDetails() {
               label="Internet Provider Account Number"
               value={editData.internet_provider_account_number || ""}
               fullWidth
-              inputProps={{ maxLength: 12 }}
               onChange={(e) =>
                 setEditData({ ...editData, internet_provider_account_number: e.target.value })
               }
@@ -391,7 +365,6 @@ export default function CustomerDetails() {
               label="Wireless Provider Account Number"
               value={editData.wireless_provider_account_number || ""}
               fullWidth
-              inputProps={{ maxLength: 12 }}
               onChange={(e) =>
                 setEditData({ ...editData, wireless_provider_account_number: e.target.value })
               }
@@ -400,11 +373,27 @@ export default function CustomerDetails() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenEditDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleProfileUpdate}>
-            Save
+          <Button variant="contained" onClick={handleProfileUpdate} disabled={saving}>
+            {saving ? "Saving..." : "Save"}
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 }
