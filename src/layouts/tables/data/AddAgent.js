@@ -42,6 +42,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
       length: password.length >= 8,
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password),
       special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
     });
   };
@@ -71,7 +72,7 @@ function AddAgent({ form, onChange, onAgentAdded, onClose }) {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://54.226.150.175:3000/api/auth/register",
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/register",
         {
           username,
           user_lastname,

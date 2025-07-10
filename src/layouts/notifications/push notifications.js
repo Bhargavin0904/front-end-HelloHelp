@@ -42,7 +42,7 @@ function Notifications() {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get("http://54.226.150.175:3000/api/customer/customers", {
+        const response = await axios.get("https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -79,7 +79,7 @@ function Notifications() {
           campaign_id: campaignId,
         };
 
-        await axios.post("http://54.226.150.175:3000/api/admin/push-notification", payload, {
+        await axios.post("https://lemonpeak-hellohelp-backend.onrender.com/api/admin/push-notification", payload, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

@@ -76,7 +76,7 @@ export default function data() {
       return;
     }
     axios
-      .get("http://54.226.150.175:3000/api/customer/customers", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

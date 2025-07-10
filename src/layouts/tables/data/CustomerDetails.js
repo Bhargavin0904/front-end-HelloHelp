@@ -54,7 +54,7 @@ export default function CustomerDetails() {
     }
 
     axios
-      .get("http://54.226.150.175:3000/api/customer/customers", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/customer/customers", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -110,7 +110,7 @@ export default function CustomerDetails() {
     try {
       setSaving(true);
       const response = await axios.patch(
-        "http://54.226.150.175:3000/api/auth/update-profile",
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/update-profile",
         editData,
         {
           headers: {

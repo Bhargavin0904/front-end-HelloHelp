@@ -45,7 +45,7 @@ function Users() {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.post("http://54.226.150.175:3000/api/auth/register", {
+      const response = await axios.post("https://lemonpeak-hellohelp-backend.onrender.com/api/auth/register", {
         headers: { Authorization: `Bearer ${token}` },
       });
       // Format your rows as needed for DataTable

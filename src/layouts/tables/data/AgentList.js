@@ -57,7 +57,7 @@ export default function useAgentTableData() {
       return;
     }
     axios
-      .get("http://54.226.150.175:3000/api/agent/agents", {
+      .get("https://lemonpeak-hellohelp-backend.onrender.com/api/agent/agents", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

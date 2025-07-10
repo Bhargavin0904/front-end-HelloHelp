@@ -59,7 +59,7 @@ function Basic() {
     if (oldPassword && newPassword && token) {
       try {
         await axios.post(
-          "http://54.226.150.175:3000/api/auth/reset-password",
+          "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/reset-password",
           { oldPassword, newPassword },
           {
             headers: {
@@ -91,10 +91,13 @@ function Basic() {
     }
     setError(false);
     try {
-      const response = await axios.post("http://54.226.150.175:3000/api/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://lemonpeak-hellohelp-backend.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");

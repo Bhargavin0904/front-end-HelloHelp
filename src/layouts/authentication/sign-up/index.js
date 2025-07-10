@@ -37,7 +37,7 @@ function Cover() {
     }
 
     try {
-      const response = await axios.post("http://54.226.150.175:3000/api/auth/register", {
+      const response = await axios.post("https://lemonpeak-hellohelp-backend.onrender.com/api/auth/register", {
         username,
         email,
         phone,
